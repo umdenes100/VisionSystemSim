@@ -49,9 +49,9 @@ void Arena::refresh()
     d.y = midPoint2.y - osv->length / 2 * cos(osv->orientation);
 
     QLineF frontOSV(a.x, a.y, b.x, b.y);
-    // QLineF leftOSV(a.x, a.y, c.x, c.y);
+    QLineF leftOSV(a.x, a.y, c.x, c.y);
     QLineF backOSV(c.x, c.y, d.x, d.y);
-    // QLineF rightOSV(b.x, b.y, d.x, d.y);
+    QLineF rightOSV(b.x, b.y, d.x, d.y);
 
     bool collision = false;
 
@@ -109,11 +109,21 @@ void Arena::refresh()
     QLineF left(0.0, 0.0, 0.0, 2.0);
     QLineF top(0.0, 2.0, 4.0, 2.0);
 
+    //need to check right and left sides of OSV in case OSV is perpendicular to wall
+
     if(right.intersect(frontOSV, NULL) == QLineF::BoundedIntersection) {
         collision = true;
     }
 
     if(right.intersect(backOSV, NULL) == QLineF::BoundedIntersection) {
+        collision = true;
+    }
+
+    if(right.intersect(rightOSV, NULL) == QLineF::BoundedIntersection) {
+        collision = true;
+    }
+
+    if(right.intersect(leftOSV, NULL) == QLineF::BoundedIntersection) {
         collision = true;
     }
 
@@ -125,11 +135,27 @@ void Arena::refresh()
         collision = true;
     }
 
+    if(left.intersect(rightOSV, NULL) == QLineF::BoundedIntersection) {
+        collision = true;
+    }
+
+    if(left.intersect(leftOSV, NULL) == QLineF::BoundedIntersection) {
+        collision = true;
+    }
+
     if(top.intersect(frontOSV, NULL) == QLineF::BoundedIntersection) {
         collision = true;
     }
 
     if(top.intersect(backOSV, NULL) == QLineF::BoundedIntersection) {
+        collision = true;
+    }
+
+    if(top.intersect(rightOSV, NULL) == QLineF::BoundedIntersection) {
+        collision = true;
+    }
+
+    if(top.intersect(leftOSV, NULL) == QLineF::BoundedIntersection) {
         collision = true;
     }
 
@@ -141,6 +167,16 @@ void Arena::refresh()
         collision = true;
     }
 
+    if(bottom.intersect(rightOSV, NULL) == QLineF::BoundedIntersection) {
+        collision = true;
+    }
+
+    if(bottom.intersect(leftOSV, NULL) == QLineF::BoundedIntersection) {
+        collision = true;
+    }
+
+
+
 
     if(collision) {
         osv->location.x = osv->prevLocation.x;
@@ -151,11 +187,13 @@ void Arena::refresh()
     update();
 }
 
-void Arena::paintEvent(QPaintEvent *event)
+void Arena::paintEvent(QPaintEvent *event)//why does this method need a parameter?
 {
     QPainter paint(this);
     QPen pen(Qt::black);
-    pen.setWidth(3);
+    //QPen brownPen();
+
+    pen.setWidth(2);
     paint.setPen(pen);
 
     // TODO: draw background
@@ -185,7 +223,7 @@ void Arena::paintEvent(QPaintEvent *event)
     paint.drawImage(metersToPixels(osv->location) - osvImage.rect().center(), osvImage);
 
     for(int i = 0; i < 3; i++) {
-        paint.drawRect(metersToPixels(obstacles[i].location).x(), metersToPixels(obstacles[i].location).y(), metersToPixels(obstacles[i].width), metersToPixels(obstacles[i].length));
+        paint.fillRect(metersToPixels(obstacles[i].location).x(), metersToPixels(obstacles[i].location).y(), metersToPixels(obstacles[i].width), metersToPixels(obstacles[i].length), QColor(170, 146, 110));
     }
 
     paint.drawEllipse(metersToPixels(destination), metersToPixels(TARGET_DIAMETER / 2), metersToPixels(TARGET_DIAMETER / 2));

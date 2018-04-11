@@ -21,7 +21,7 @@ void CommunicationWidget::read()
     while(thisPort->bytesAvailable()) {
         char c;
         thisPort->getChar(&c);
-
+        //qDebug << c;
         if(!commandMode) {
             if(c == '#') {
                 commandMode = true;
