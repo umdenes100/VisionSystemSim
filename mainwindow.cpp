@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->communicationwidget->osv = ui->arena->osv;
+    ui->communicationwidget->arena = ui->arena;
     ui->settingswidget->osv = ui->arena->osv;
     connect(ui->settingswidget, SIGNAL(randomizeClicked()), ui->arena, SLOT(randomize()));
 }

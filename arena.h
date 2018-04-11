@@ -6,6 +6,7 @@
 #include <QTimer>
 #include <stdlib.h>
 #include <QLineF>
+#include <QPointF>
 
 #include "osv.h"
 #include "detail.h"
@@ -26,6 +27,7 @@ public:
     OSV* osv;
     QPoint metersToPixels(Point inMeters);
     int metersToPixels(float length);
+    float getDistance(int index);
     Point destination;
     Point startingLocation;
 
@@ -50,6 +52,7 @@ private:
 
     inline float max(float a, float b);
     inline float min(float a, float b);
+    inline float distance(Point a, QPointF *b);
 };
 
 #endif // ARENA_H

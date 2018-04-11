@@ -34,3 +34,63 @@ void OSVEditorWindow::paintEvent(QPaintEvent *e)
     paint.setPen(pen2);
     paint.fillRect(20, 50, widthPx - 40, heightPx - 100, Qt::black);
 }
+
+void OSVEditorWindow::on_pushButton_clicked()
+{
+    osv->toggleSensor(0);
+}
+
+void OSVEditorWindow::on_pushButton_10_clicked()
+{
+    osv->toggleSensor(9);
+}
+
+void OSVEditorWindow::on_pushButton_11_clicked()
+{
+    osv->toggleSensor(10);
+}
+
+void OSVEditorWindow::on_pushButton_12_clicked()
+{
+    osv->toggleSensor(11);
+}
+
+void OSVEditorWindow::on_pushButton_2_clicked()
+{
+    osv->toggleSensor(1);
+}
+
+void OSVEditorWindow::on_pushButton_3_clicked()
+{
+    osv->toggleSensor(2);
+}
+
+void OSVEditorWindow::on_pushButton_4_clicked()
+{
+    osv->toggleSensor(3);
+}
+
+void OSVEditorWindow::on_pushButton_5_clicked()
+{
+    osv->toggleSensor(4);
+}
+
+void OSVEditorWindow::on_pushButton_6_clicked()
+{
+    osv->toggleSensor(5);
+}
+
+void OSVEditorWindow::on_pushButton_7_clicked()
+{
+    osv->toggleSensor(6);
+}
+
+void OSVEditorWindow::on_pushButton_8_clicked()
+{
+    osv->toggleSensor(7);
+}
+
+void OSVEditorWindow::on_pushButton_9_clicked()
+{
+    osv->toggleSensor(8);
+}

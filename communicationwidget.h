@@ -9,6 +9,7 @@
 #include <QScrollBar>
 
 #include "osv.h"
+#include "arena.h"
 
 namespace Ui {
 class CommunicationWidget;
@@ -22,6 +23,7 @@ public:
     explicit CommunicationWidget(QWidget *parent = 0);
     ~CommunicationWidget();
     OSV* osv;
+    Arena* arena;
 
 private slots:
     void checkPorts();

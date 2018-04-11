@@ -338,10 +338,107 @@ void Arena::randomize()
     osv->startingLocation = startingLocation;
 }
 
+float Arena::getDistance(int index)
+{
+
+    if(!osv->sensors[index]) {
+        return 0;
+    }
+
+    // we have to get the slope of the front side of the osv first
+    Point midPointFront;
+    midPointFront.x = osv->location.x + osv->width / 2 * cos(osv->orientation);
+    midPointFront.y = osv->location.y + osv->width / 2 * sin(osv->orientation);
+
+    Point a;
+    a.x = midPointFront.x - osv->length / 2 * sin(osv->orientation);
+    a.y = midPointFront.y + osv->length / 2 * cos(osv->orientation);
+
+    Point b;
+    b.x = midPointFront.x + osv->length / 2 * sin(osv->orientation);
+    b.y = midPointFront.y - osv->length / 2 * cos(osv->orientation);
+
+    Point midPointBack;
+    midPointBack.x = osv->location.x - osv->width / 2 * cos(osv->orientation);
+    midPointBack.y = osv->location.y - osv->width / 2 * sin(osv->orientation);
+
+    Point c;
+    c.x = midPointBack.x - osv->length / 2 * sin(osv->orientation);
+    c.y = midPointBack.y + osv->length / 2 * cos(osv->orientation);
+
+    Point d;
+    d.x = midPointBack.x + osv->length / 2 * sin(osv->orientation);
+    d.y = midPointBack.y - osv->length / 2 * cos(osv->orientation);
+
+    Point midPointLeft;
+    midPointLeft.x = (a.x + c.x) / 2;
+    midPointLeft.y = (a.y + c.y) / 2;
+
+    Point midPointRight;
+    midPointRight.x = (b.x + d.x) / 2;
+    midPointRight.y = (b.y + d.y) / 2;
+
+    Point sensorLocations[12] {a, midPointFront, b, b, midPointRight, d, d, midPointBack, c, c, midPointLeft, a};
+
+    int sideIndex = index / 3;
+    float orientation = osv->orientation + sideIndex * PI / 2;
+
+    int range = 1;
+    Point endPoint;
+    endPoint.x = sensorLocations[index].x + range * cos(orientation);
+    endPoint.y = sensorLocations[index].y + range * sin(orientation);
+
+    QLineF sensorTrace(sensorLocations[index].x, sensorLocations[index].y, endPoint.x, endPoint.y);
+    float minimumDistance = 1;
+    QPointF *tempPoint = new QPointF(0,0);
+
+    for(int i = 0; i < 3; i++) {
+        // for each of the obstacles
+        QLineF right(obstacles[i].location.x + obstacles[i].width, obstacles[i].location.y, obstacles[i].location.x + obstacles[i].width, obstacles[i].location.y - obstacles[i].length);
+        QLineF bottom(obstacles[i].location.x, obstacles[i].location.y - obstacles[i].length, obstacles[i].location.x + obstacles[i].width, obstacles[i].location.y - obstacles[i].length);
+        QLineF left(obstacles[i].location.x, obstacles[i].location.y - obstacles[i].length, obstacles[i].location.x, obstacles[i].location.y);
+        QLineF top(obstacles[i].location.x, obstacles[i].location.y, obstacles[i].location.x + obstacles[i].width, obstacles[i].location.y);
+
+        if(right.intersect(sensorTrace, tempPoint) == QLineF::BoundedIntersection) {
+            float tempDistance = distance(sensorLocations[index], tempPoint);
+            if(tempDistance < minimumDistance) {
+                minimumDistance = tempDistance;
+            }
+        }
+
+        if(left.intersect(sensorTrace, tempPoint) == QLineF::BoundedIntersection) {
+            float tempDistance = distance(sensorLocations[index], tempPoint);
+            if(tempDistance < minimumDistance) {
+                minimumDistance = tempDistance;
+            }
+        }
+
+        if(top.intersect(sensorTrace, tempPoint) == QLineF::BoundedIntersection) {
+            float tempDistance = distance(sensorLocations[index], tempPoint);
+            if(tempDistance < minimumDistance) {
+                minimumDistance = tempDistance;
+            }
+        }
+
+        if(bottom.intersect(sensorTrace, tempPoint) == QLineF::BoundedIntersection) {
+            float tempDistance = distance(sensorLocations[index], tempPoint);
+            if(tempDistance < minimumDistance) {
+                minimumDistance = tempDistance;
+            }
+        }
+    }
+
+    return minimumDistance;
+}
+
 inline float Arena::max(float a, float b) {
     return a > b ? a : b;
 }
 
 inline float Arena::min(float a, float b) {
     return a < b ? a : b;
+}
+
+inline float Arena::distance(Point a, QPointF *b) {
+    return sqrt(pow(a.x - b->x(), 2) + pow(a.y - b->y(), 2));
 }

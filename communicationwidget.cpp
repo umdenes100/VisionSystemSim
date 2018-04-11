@@ -86,6 +86,10 @@ void CommunicationWidget::executeCommand()
 
     if(commandBuffer.contains("distance")) {
         // read distance
+        commandBuffer.remove("distance");
+        int index = commandBuffer.toInt();
+        QString send = QString::number(arena->getDistance(index)) + "\n";
+        thisPort->write(send.toUtf8());
         return;
     }
 }

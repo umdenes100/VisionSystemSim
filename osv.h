@@ -30,6 +30,7 @@ public:
     float ppm;
     QImage draw();
     QImage osvImage;
+    void toggleSensor(int index);
 
 signals:
 

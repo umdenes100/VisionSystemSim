@@ -81,3 +81,11 @@ void OSV::setRightPWM(int pwm)
 {
     rightPWM = pwm;
 }
+
+void OSV::toggleSensor(int index)
+{
+    if (sensors[index] == false)
+        sensors[index] = true;
+    else
+        sensors[index] = false;
+}
