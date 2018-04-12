@@ -4,12 +4,13 @@ OSV::OSV(QObject *parent) : QObject(parent)
 {
     location.x = 0.5;
     location.y = 1;
+    location.theta = 0;
     destination.x = 0.0;
     destination.y = 0.0;
 
     width = 0.229;
     length = 0.239;
-    orientation = 0;
+    location.theta = 0;
     leftPWM = rightPWM = 0;
 
     int widthPx = 229;
@@ -42,7 +43,7 @@ QImage OSV::draw()
     QPoint center = scaled.rect().center();
     QMatrix matrix;
     matrix.translate(center.x(), center.y());
-    matrix.rotate(-orientation * 180 / PI);
+    matrix.rotate(-location.theta * 180 / PI);
     QImage dstImg = scaled.transformed(matrix);
 
     return dstImg;
@@ -56,18 +57,18 @@ void OSV::refreshLocation()
 
     prevLocation.x = location.x;
     prevLocation.y = location.y;
-    prevLocation.theta = orientation;
+    prevLocation.theta = location.theta;
 
-    if(orientation > 2 * PI) {
-        orientation -= 2 * PI;
+    if(location.theta > 2 * PI) {
+        location.theta -= 2 * PI;
     }
 
     float speed = ((TANK_SPEED * ((rightPWM + leftPWM) / 2)) / 255.0) / 50.0;
-    location.x = location.x + speed * cos(orientation);
-    location.y = location.y + speed * sin(orientation);
+    location.x = location.x + speed * cos(location.theta);
+    location.y = location.y + speed * sin(location.theta);
 
 
-    orientation += 2 * PI * ROTATIONS_PER_SECOND / 50 * (float)(rightPWM - leftPWM) / 255.0;
+    location.theta += 2 * PI * ROTATIONS_PER_SECOND / 50 * (float)(rightPWM - leftPWM) / 255.0;
 
 
 }
@@ -88,4 +89,10 @@ void OSV::toggleSensor(int index)
         sensors[index] = true;
     else
         sensors[index] = false;
+}
+
+void OSV::setLocation(Point p)
+{
+    this->location = p;
+    this->location.theta = p.theta;
 }

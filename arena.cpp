@@ -25,28 +25,28 @@ void Arena::refresh()
 
     // we have to get the slope of the front side of the osv first
     Point midPoint;
-    midPoint.x = osv->location.x + osv->width / 2 * cos(osv->orientation);
-    midPoint.y = osv->location.y + osv->width / 2 * sin(osv->orientation);
+    midPoint.x = osv->location.x + osv->width / 2 * cos(osv->location.theta);
+    midPoint.y = osv->location.y + osv->width / 2 * sin(osv->location.theta);
 
     Point a;
-    a.x = midPoint.x - osv->length / 2 * sin(osv->orientation);
-    a.y = midPoint.y + osv->length / 2 * cos(osv->orientation);
+    a.x = midPoint.x - osv->length / 2 * sin(osv->location.theta);
+    a.y = midPoint.y + osv->length / 2 * cos(osv->location.theta);
 
     Point b;
-    b.x = midPoint.x + osv->length / 2 * sin(osv->orientation);
-    b.y = midPoint.y - osv->length / 2 * cos(osv->orientation);
+    b.x = midPoint.x + osv->length / 2 * sin(osv->location.theta);
+    b.y = midPoint.y - osv->length / 2 * cos(osv->location.theta);
 
     Point midPoint2;
-    midPoint2.x = osv->location.x - osv->width / 2 * cos(osv->orientation);
-    midPoint2.y = osv->location.y - osv->width / 2 * sin(osv->orientation);
+    midPoint2.x = osv->location.x - osv->width / 2 * cos(osv->location.theta);
+    midPoint2.y = osv->location.y - osv->width / 2 * sin(osv->location.theta);
 
     Point c;
-    c.x = midPoint2.x - osv->length / 2 * sin(osv->orientation);
-    c.y = midPoint2.y + osv->length / 2 * cos(osv->orientation);
+    c.x = midPoint2.x - osv->length / 2 * sin(osv->location.theta);
+    c.y = midPoint2.y + osv->length / 2 * cos(osv->location.theta);
 
     Point d;
-    d.x = midPoint2.x + osv->length / 2 * sin(osv->orientation);
-    d.y = midPoint2.y - osv->length / 2 * cos(osv->orientation);
+    d.x = midPoint2.x + osv->length / 2 * sin(osv->location.theta);
+    d.y = midPoint2.y - osv->length / 2 * cos(osv->location.theta);
 
     QLineF frontOSV(a.x, a.y, b.x, b.y);
     QLineF leftOSV(a.x, a.y, c.x, c.y);
@@ -181,7 +181,7 @@ void Arena::refresh()
     if(collision) {
         osv->location.x = osv->prevLocation.x;
         osv->location.y = osv->prevLocation.y;
-        osv->orientation = osv->prevLocation.theta;
+        osv->location.theta = osv->prevLocation.theta;
     }
 
     update();
@@ -267,6 +267,7 @@ void Arena::randomize()
     startingLocation.x = 0.35;
     startingLocation.y = 0.4 + (rand() % 5) * 0.3;
     startingLocation.theta = (rand() % 4) * PI / 2 - PI;
+    osv->setLocation(startingLocation);
 
     // Generate random positions and orientations for obstacles
     int largeObstacleQuadrant = rand() % 3;
@@ -350,28 +351,28 @@ float Arena::getDistance(int index)
 
     // we have to get the slope of the front side of the osv first
     Point midPointFront;
-    midPointFront.x = osv->location.x + osv->width / 2 * cos(osv->orientation);
-    midPointFront.y = osv->location.y + osv->width / 2 * sin(osv->orientation);
+    midPointFront.x = osv->location.x + osv->width / 2 * cos(osv->location.theta);
+    midPointFront.y = osv->location.y + osv->width / 2 * sin(osv->location.theta);
 
     Point a;
-    a.x = midPointFront.x - osv->length / 2 * sin(osv->orientation);
-    a.y = midPointFront.y + osv->length / 2 * cos(osv->orientation);
+    a.x = midPointFront.x - osv->length / 2 * sin(osv->location.theta);
+    a.y = midPointFront.y + osv->length / 2 * cos(osv->location.theta);
 
     Point b;
-    b.x = midPointFront.x + osv->length / 2 * sin(osv->orientation);
-    b.y = midPointFront.y - osv->length / 2 * cos(osv->orientation);
+    b.x = midPointFront.x + osv->length / 2 * sin(osv->location.theta);
+    b.y = midPointFront.y - osv->length / 2 * cos(osv->location.theta);
 
     Point midPointBack;
-    midPointBack.x = osv->location.x - osv->width / 2 * cos(osv->orientation);
-    midPointBack.y = osv->location.y - osv->width / 2 * sin(osv->orientation);
+    midPointBack.x = osv->location.x - osv->width / 2 * cos(osv->location.theta);
+    midPointBack.y = osv->location.y - osv->width / 2 * sin(osv->location.theta);
 
     Point c;
-    c.x = midPointBack.x - osv->length / 2 * sin(osv->orientation);
-    c.y = midPointBack.y + osv->length / 2 * cos(osv->orientation);
+    c.x = midPointBack.x - osv->length / 2 * sin(osv->location.theta);
+    c.y = midPointBack.y + osv->length / 2 * cos(osv->location.theta);
 
     Point d;
-    d.x = midPointBack.x + osv->length / 2 * sin(osv->orientation);
-    d.y = midPointBack.y - osv->length / 2 * cos(osv->orientation);
+    d.x = midPointBack.x + osv->length / 2 * sin(osv->location.theta);
+    d.y = midPointBack.y - osv->length / 2 * cos(osv->location.theta);
 
     Point midPointLeft;
     midPointLeft.x = (a.x + c.x) / 2;
@@ -384,7 +385,7 @@ float Arena::getDistance(int index)
     Point sensorLocations[12] {a, midPointFront, b, b, midPointRight, d, d, midPointBack, c, c, midPointLeft, a};
 
     int sideIndex = index / 3;
-    float orientation = osv->orientation + sideIndex * PI / 2;
+    float orientation = osv->location.theta + sideIndex * PI / 2;
 
     int range = 1;
     Point endPoint;

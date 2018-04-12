@@ -49,10 +49,10 @@ void CommunicationWidget::executeCommand()
 
     if(commandBuffer == "location") {
         float orientation;
-        if(osv->orientation > PI) {
-            orientation = osv->orientation - 2 * PI;
+        if(osv->location.theta > PI) {
+            orientation = osv->location.theta - 2 * PI;
         } else {
-            orientation = osv->orientation;
+            orientation = osv->location.theta;
         }
         QString location = "";
         location += QString::number(osv->location.x) + ",";

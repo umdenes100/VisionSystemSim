@@ -23,10 +23,10 @@ public:
     bool sensors[9];
     Point startingLocation;
     Point destination;
-    float orientation;
     float length, width;
     void setRightPWM(int pwm);
     void setLeftPWM(int pwm);
+    void setLocation(Point p);
     float ppm;
     QImage draw();
     QImage osvImage;
