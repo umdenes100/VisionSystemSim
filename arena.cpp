@@ -252,6 +252,9 @@ void Arena::updateDestination()
 
 void Arena::randomize()
 {
+    time_t t;
+    srand((unsigned) time(&t));
+
     static const float quadrantBounds[4][4] = {
         // Min x, Max x, Min y, Max y
         {1.35, 2.25, 1.0, 1.8},
