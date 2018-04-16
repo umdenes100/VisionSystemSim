@@ -15,12 +15,16 @@ class EditorButton : public QWidget
 
 public:
     explicit EditorButton(QWidget *parent = 0);
-    void setHorizontal();
     ~EditorButton();
 
 private:
     Ui::EditorButton *ui;
     void paintEvent(QPaintEvent *e);
+    void enterEvent(QEvent *e);
+    void leaveEvent(QEvent *e);
+    void mousePressEvent(QMouseEvent *e);
+    int buttonState = 0;
+    int index;
 };
 
 #endif // EDITORBUTTON_H
