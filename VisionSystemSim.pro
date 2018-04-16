@@ -31,7 +31,8 @@ SOURCES += \
     settingswidget.cpp \
     communicationwidget.cpp \
     osv.cpp \
-    osveditorwindow.cpp
+    osveditorwindow.cpp \
+    editorbutton.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -40,11 +41,13 @@ HEADERS += \
     communicationwidget.h \
     osv.h \
     detail.h \
-    osveditorwindow.h
+    osveditorwindow.h \
+    editorbutton.h
 
 FORMS += \
         mainwindow.ui \
     arena.ui \
     settingswidget.ui \
     communicationwidget.ui \
-    osveditorwindow.ui
+    osveditorwindow.ui \
+    editorbutton.ui
