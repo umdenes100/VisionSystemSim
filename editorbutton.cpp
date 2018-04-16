@@ -19,7 +19,12 @@ void EditorButton::paintEvent(QPaintEvent *e)
     QPainter paint(this);
     QPen pen(Qt::black);
     pen.setWidth(3);
+    QPen whitePen(Qt::white);
+    whitePen.setWidth(3);
     paint.setPen(pen);
+    QFont font("default", 12);
+    paint.setFont(font);
+    QFontMetrics metrics(font);
 
     switch(buttonState) {
     case 0:
@@ -32,6 +37,9 @@ void EditorButton::paintEvent(QPaintEvent *e)
     case 2:
         paint.fillRect(0, 0, this->width() - 1, this->height() - 1, QColor(75, 75, 75));
         paint.drawRect(0, 0, this->width() - 1, this->height() - 1);
+        paint.setPen(whitePen);
+        paint.drawText(QPoint(width() / 2 - (metrics.width(QString::number(index)) / 2), height() / 2 + 8), QString::number(index));
+        paint.setPen(pen);
         break;
     }
 }
@@ -61,4 +69,9 @@ void EditorButton::mousePressEvent(QMouseEvent *e)
     }
 
     update();
+}
+
+void EditorButton::setIndex(int index)
+{
+    this->index = index;
 }

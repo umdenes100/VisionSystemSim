@@ -6,6 +6,30 @@ OSVEditorWindow::OSVEditorWindow(QWidget *parent) :
     ui(new Ui::OSVEditorWindow)
 {
     ui->setupUi(this);
+    ui->widget->setIndex(0);
+    connect(ui->widget, SIGNAL(pressed(int)), this, SLOT(buttonPressed(int)));
+    ui->widget_2->setIndex(1);
+    connect(ui->widget_2, SIGNAL(pressed(int)), this, SLOT(buttonPressed(int)));
+    ui->widget_3->setIndex(2);
+    connect(ui->widget_3, SIGNAL(pressed(int)), this, SLOT(buttonPressed(int)));
+    ui->widget_4->setIndex(3);
+    connect(ui->widget_4, SIGNAL(pressed(int)), this, SLOT(buttonPressed(int)));
+    ui->widget_5->setIndex(4);
+    connect(ui->widget_5, SIGNAL(pressed(int)), this, SLOT(buttonPressed(int)));
+    ui->widget_6->setIndex(5);
+    connect(ui->widget_6, SIGNAL(pressed(int)), this, SLOT(buttonPressed(int)));
+    ui->widget_7->setIndex(6);
+    connect(ui->widget_7, SIGNAL(pressed(int)), this, SLOT(buttonPressed(int)));
+    ui->widget_8->setIndex(7);
+    connect(ui->widget_8, SIGNAL(pressed(int)), this, SLOT(buttonPressed(int)));
+    ui->widget_9->setIndex(8);
+    connect(ui->widget_9, SIGNAL(pressed(int)), this, SLOT(buttonPressed(int)));
+    ui->widget_10->setIndex(9);
+    connect(ui->widget_10, SIGNAL(pressed(int)), this, SLOT(buttonPressed(int)));
+    ui->widget_11->setIndex(10);
+    connect(ui->widget_11, SIGNAL(pressed(int)), this, SLOT(buttonPressed(int)));
+    ui->widget_12->setIndex(11);
+    connect(ui->widget_12, SIGNAL(pressed(int)), this, SLOT(buttonPressed(int)));
 }
 
 OSVEditorWindow::~OSVEditorWindow()
@@ -35,62 +59,7 @@ void OSVEditorWindow::paintEvent(QPaintEvent *e)
     paint.fillRect(20, 50, widthPx - 40, heightPx - 100, Qt::black);
 }
 
-void OSVEditorWindow::on_pushButton_clicked()
+void OSVEditorWindow::buttonPressed(int index)
 {
-    osv->toggleSensor(0);
-}
-
-void OSVEditorWindow::on_pushButton_10_clicked()
-{
-    osv->toggleSensor(9);
-}
-
-void OSVEditorWindow::on_pushButton_11_clicked()
-{
-    osv->toggleSensor(10);
-}
-
-void OSVEditorWindow::on_pushButton_12_clicked()
-{
-    osv->toggleSensor(11);
-}
-
-void OSVEditorWindow::on_pushButton_2_clicked()
-{
-    osv->toggleSensor(1);
-}
-
-void OSVEditorWindow::on_pushButton_3_clicked()
-{
-    osv->toggleSensor(2);
-}
-
-void OSVEditorWindow::on_pushButton_4_clicked()
-{
-    osv->toggleSensor(3);
-}
-
-void OSVEditorWindow::on_pushButton_5_clicked()
-{
-    osv->toggleSensor(4);
-}
-
-void OSVEditorWindow::on_pushButton_6_clicked()
-{
-    osv->toggleSensor(5);
-}
-
-void OSVEditorWindow::on_pushButton_7_clicked()
-{
-    osv->toggleSensor(6);
-}
-
-void OSVEditorWindow::on_pushButton_8_clicked()
-{
-    osv->toggleSensor(7);
-}
-
-void OSVEditorWindow::on_pushButton_9_clicked()
-{
-    osv->toggleSensor(8);
+    osv->toggleSensor(index);
 }

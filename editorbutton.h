@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QPainter>
 #include <QMouseEvent>
+#include <QFont>
+#include <QFontMetrics>
 
 namespace Ui {
 class EditorButton;
@@ -15,7 +17,11 @@ class EditorButton : public QWidget
 
 public:
     explicit EditorButton(QWidget *parent = 0);
+    void setIndex(int index);
     ~EditorButton();
+
+signals:
+    void pressed(int index);
 
 private:
     Ui::EditorButton *ui;
