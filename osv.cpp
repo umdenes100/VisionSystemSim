@@ -32,6 +32,10 @@ OSV::OSV(QObject *parent) : QObject(parent)
     paint.fillRect(20, 50, widthPx - 40, heightPx - 100, Qt::black);
 
     osvImage = image;
+
+    for(int i = 0; i < 12; i++) {
+        sensors[i] = false;
+    }
 }
 
 QImage OSV::draw()

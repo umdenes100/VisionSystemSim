@@ -16,6 +16,7 @@ class OSVEditorWindow : public QMainWindow
 
 public:
     explicit OSVEditorWindow(QWidget *parent = 0);
+    void init(OSV* osv);
     OSV *osv;
     ~OSVEditorWindow();
 

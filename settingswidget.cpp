@@ -21,6 +21,6 @@ void SettingsWidget::on_RandomizeButton_clicked()
 void SettingsWidget::on_OSVButton_clicked()
 {
     OSVEditorWindow *window = new OSVEditorWindow(this);
-    window->osv = osv;
+    window->init(osv);
     window->show();
 }

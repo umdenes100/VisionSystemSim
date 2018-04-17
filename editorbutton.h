@@ -18,6 +18,7 @@ class EditorButton : public QWidget
 public:
     explicit EditorButton(QWidget *parent = 0);
     void setIndex(int index);
+    void setState(int state);
     ~EditorButton();
 
 signals:
@@ -29,7 +30,7 @@ private:
     void enterEvent(QEvent *e);
     void leaveEvent(QEvent *e);
     void mousePressEvent(QMouseEvent *e);
-    int buttonState = 0;
+    int buttonState;
     int index;
 };
 

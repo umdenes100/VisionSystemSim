@@ -62,6 +62,7 @@ void EditorButton::leaveEvent(QEvent *e)
 
 void EditorButton::mousePressEvent(QMouseEvent *e)
 {
+    emit pressed(index);
     if(buttonState == 2) {
         buttonState = 1;
     } else {
@@ -74,4 +75,10 @@ void EditorButton::mousePressEvent(QMouseEvent *e)
 void EditorButton::setIndex(int index)
 {
     this->index = index;
+}
+
+void EditorButton::setState(int state)
+{
+    buttonState = state;
+    update();
 }

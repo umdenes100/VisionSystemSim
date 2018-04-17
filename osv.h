@@ -20,7 +20,7 @@ public:
     void refreshLocation();
     Point location;
     Point prevLocation;
-    bool sensors[9];
+    bool sensors[12];
     Point startingLocation;
     Point destination;
     float length, width;
