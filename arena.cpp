@@ -340,6 +340,7 @@ void Arena::randomize()
     }
 
     osv->startingLocation = startingLocation;
+    osv->destination = destination;
 }
 
 float Arena::getDistance(int index)
