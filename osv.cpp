@@ -83,15 +83,11 @@ void OSV::refreshLocation()
 
 void OSV::setLeftPWM(int pwm)
 {
-    //qDebug() << "left PWM";
-    //qDebug() << pwm;
     leftPWM = pwm;
 }
 
 void OSV::setRightPWM(int pwm)
 {
-    //qDebug() << "right PWM";
-    //qDebug() << pwm;
     rightPWM = pwm;
 }
 
