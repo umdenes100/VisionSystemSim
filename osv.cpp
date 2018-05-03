@@ -67,6 +67,10 @@ void OSV::refreshLocation()
         location.theta -= 2 * PI;
     }
 
+    if(location.theta < -2 * PI) {
+        location.theta += 2 * PI;
+    }
+
     float speed = ((TANK_SPEED * ((rightPWM + leftPWM) / 2)) / 255.0) / 50.0;
     location.x = location.x + speed * cos(location.theta);
     location.y = location.y + speed * sin(location.theta);
@@ -79,11 +83,15 @@ void OSV::refreshLocation()
 
 void OSV::setLeftPWM(int pwm)
 {
+    //qDebug() << "left PWM";
+    //qDebug() << pwm;
     leftPWM = pwm;
 }
 
 void OSV::setRightPWM(int pwm)
 {
+    //qDebug() << "right PWM";
+    //qDebug() << pwm;
     rightPWM = pwm;
 }
 
