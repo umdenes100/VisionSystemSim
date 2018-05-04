@@ -86,11 +86,11 @@ void OSV::refreshLocation()
     prevLocation.y = location.y;
     prevLocation.theta = location.theta;
 
-    if(location.theta > 2 * PI) {
+    if(location.theta > PI) {
         location.theta -= 2 * PI;
     }
 
-    if(location.theta < -2 * PI) {
+    if(location.theta < - PI) {
         location.theta += 2 * PI;
     }
 
