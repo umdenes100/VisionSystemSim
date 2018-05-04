@@ -255,6 +255,9 @@ void Arena::randomize()
     time_t t;
     srand((unsigned) time(&t));
 
+    osv->setLeftPWM(0);
+    osv->setRightPWM(0);
+
     static const float quadrantBounds[4][4] = {
         // Min x, Max x, Min y, Max y
         {1.35, 2.25, 1.0, 1.8},
