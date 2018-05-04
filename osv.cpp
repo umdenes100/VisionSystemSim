@@ -13,23 +13,46 @@ OSV::OSV(QObject *parent) : QObject(parent)
     location.theta = 0;
     leftPWM = rightPWM = 0;
 
-    int widthPx = 229;
-    int heightPx = 239;
+    const int widthPx = 229;
+    const int heightPx = 239;
+
+    QPen pen(Qt::green);
+    pen.setWidth(5);
 
     QImage image(widthPx, heightPx, QImage::Format_ARGB32);
     image.fill(qRgba(0, 0, 0, 0));
     QPainter paint;
-    QPen pen(Qt::darkGray);
-    pen.setWidth(5);
     paint.begin(&image);
     paint.setPen(pen);
 
+    //draw treads
     paint.fillRect(0, 0, widthPx, 28, QColor(80,80,80));
     paint.fillRect(0, heightPx - 28, widthPx, 28, QColor(80,80,80));
-    QPen pen2(Qt::black);
-    pen2.setWidth(5);
-    paint.setPen(pen2);
+
+    //draw body
     paint.fillRect(20, 50, widthPx - 40, heightPx - 100, Qt::black);
+
+    //draw aruco marker
+    const int marker_top_x = widthPx / 2 - MARKER_WIDTH / 2;
+    const int marker_top_y = heightPx / 2 - MARKER_WIDTH / 2;
+    paint.fillRect(widthPx / 2 - WOOD_WIDTH / 2, heightPx / 2 - WOOD_WIDTH / 2, WOOD_WIDTH, WOOD_WIDTH, Qt::white);
+    paint.fillRect(marker_top_x, marker_top_y, MARKER_WIDTH, MARKER_WIDTH, Qt::black);
+
+    //marker #121
+    int square_width = MARKER_WIDTH / 7;
+    paint.fillRect(marker_top_x + square_width, marker_top_y + square_width, square_width, 2*square_width, Qt::white);
+    paint.fillRect(marker_top_x + square_width, marker_top_y + 5*square_width, square_width, square_width, Qt::white);
+    paint.fillRect(marker_top_x + 2*square_width, marker_top_y + 3*square_width, square_width, 2*square_width, Qt::white);
+    paint.fillRect(marker_top_x + 3*square_width, marker_top_y + 2*square_width, 2*square_width, 2*square_width, Qt::white);
+    paint.fillRect(marker_top_x + 3*square_width, marker_top_y + 5*square_width, 3*square_width, square_width, Qt::white);
+    paint.fillRect(marker_top_x + 5*square_width, marker_top_y + 4*square_width, square_width, square_width, Qt::white);
+    paint.fillRect(marker_top_x + 5*square_width, marker_top_y + 2*square_width, square_width, square_width, Qt::white);
+
+
+    //draw arrow
+    paint.drawLine(0, heightPx / 2, widthPx, heightPx / 2);
+    paint.drawLine(widthPx, heightPx / 2, widthPx - 50, heightPx / 2 + 50);
+    paint.drawLine(widthPx, heightPx / 2, widthPx - 50, heightPx / 2 - 50);
 
     osvImage = image;
 

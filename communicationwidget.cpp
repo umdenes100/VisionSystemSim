@@ -21,7 +21,7 @@ void CommunicationWidget::read()
     while(thisPort->bytesAvailable()) {
         char c;
         thisPort->getChar(&c);
-        //qDebug << c;
+
         if(!commandMode) {
             if(c == '#') {
                 commandMode = true;
@@ -54,6 +54,12 @@ void CommunicationWidget::executeCommand()
         } else {
             orientation = osv->location.theta;
         }
+        qDebug() << "Location.x: ";
+        qDebug() << osv->location.x;
+        qDebug() << "Location.y: ";
+        qDebug() << osv->location.y;
+        qDebug() << "Location.theta: ";
+        qDebug() << orientation;
         QString location = "";
         location += QString::number(osv->location.x) + ",";
         location += QString::number(osv->location.y) + ",";

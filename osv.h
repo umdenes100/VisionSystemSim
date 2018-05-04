@@ -11,6 +11,8 @@
 #include "detail.h"
 #define TANK_SPEED 0.35
 #define ROTATIONS_PER_SECOND 0.16
+#define WOOD_WIDTH 120
+#define MARKER_WIDTH 100
 
 class OSV : public QObject
 {
