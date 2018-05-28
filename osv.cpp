@@ -50,9 +50,9 @@ OSV::OSV(QObject *parent) : QObject(parent)
 
 
     //draw arrow
-    paint.drawLine(0, heightPx / 2, widthPx, heightPx / 2);
-    paint.drawLine(widthPx, heightPx / 2, widthPx - 50, heightPx / 2 + 50);
-    paint.drawLine(widthPx, heightPx / 2, widthPx - 50, heightPx / 2 - 50);
+    paint.drawLine(marker_top_x, marker_top_y, marker_top_x + MARKER_WIDTH, marker_top_y);
+    paint.drawLine(marker_top_x + MARKER_WIDTH, marker_top_y, marker_top_x + MARKER_WIDTH - 25, marker_top_y - 25);
+    paint.drawLine(marker_top_x + MARKER_WIDTH, marker_top_y, marker_top_x + MARKER_WIDTH - 25, marker_top_y + 25);
 
     osvImage = image;
 
