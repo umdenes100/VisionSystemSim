@@ -8,12 +8,30 @@ CommunicationWidget::CommunicationWidget(QWidget *parent) :
     ui->setupUi(this);
     refreshTimer = new QTimer();
     connect(refreshTimer, SIGNAL(timeout()), this, SLOT(checkPorts()));
+    connect(ui->comboBox, SIGNAL(activated(QString)), this, SLOT(setPort(QString)));
     refreshTimer->start(500);
 }
 
 CommunicationWidget::~CommunicationWidget()
 {
     delete ui;
+}
+
+void CommunicationWidget::setPort(QString name)
+{
+    // if we have a new port
+    // TODO: check for bs
+    thisPort = new QSerialPort(name, this);
+    thisPort->setBaudRate(QSerialPort::Baud9600);
+    thisPort->setParity(QSerialPort::NoParity);
+    thisPort->setDataBits(QSerialPort::Data8);
+    thisPort->setStopBits(QSerialPort::OneStop);
+    thisPort->setFlowControl(QSerialPort::NoFlowControl);
+
+    while(!thisPort->isOpen()) {
+        thisPort->open(QSerialPort::ReadWrite);
+    }
+    connect(thisPort, SIGNAL(readyRead()), this, SLOT(read()));
 }
 
 void CommunicationWidget::read()
@@ -97,25 +115,9 @@ void CommunicationWidget::executeCommand()
 
 void CommunicationWidget::checkPorts()
 {
-    if(hasPort) {
-        return;
-    }
-
     QList<QSerialPortInfo> ports = QSerialPortInfo::availablePorts();
-    if(ports.size() > 0) {
-        // if we have a new port
-        // TODO: check for bs
-        hasPort = true;
-        thisPort = new QSerialPort(ports[0].portName(), this);
-        thisPort->setBaudRate(QSerialPort::Baud9600);
-        thisPort->setParity(QSerialPort::NoParity);
-        thisPort->setDataBits(QSerialPort::Data8);
-        thisPort->setStopBits(QSerialPort::OneStop);
-        thisPort->setFlowControl(QSerialPort::NoFlowControl);
-
-        while(!thisPort->isOpen()) {
-            thisPort->open(QSerialPort::ReadWrite);
-        }
-        connect(thisPort, SIGNAL(readyRead()), this, SLOT(read()));
+    ui->comboBox->clear();
+    foreach(QSerialPortInfo port, ports) {
+        ui->comboBox->addItem(port.portName());
     }
 }

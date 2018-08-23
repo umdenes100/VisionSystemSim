@@ -28,12 +28,13 @@ public:
 private slots:
     void checkPorts();
     void read();
+    void setPort(QString name);
 
 private:
     Ui::CommunicationWidget *ui;
     QSerialPort* thisPort;
     QTimer* refreshTimer;
-    bool hasPort = false;
+    int hasPort = -1;
     bool commandMode = false;
     QString commandBuffer;
     void executeCommand();
