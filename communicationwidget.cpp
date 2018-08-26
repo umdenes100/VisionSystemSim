@@ -19,8 +19,9 @@ CommunicationWidget::~CommunicationWidget()
 
 void CommunicationWidget::setPort(QString name)
 {
-    // if we have a new port
-    // TODO: check for bs
+    if (thisPort != NULL) {
+        thisPort->close();
+    }
     thisPort = new QSerialPort(name, this);
     thisPort->setBaudRate(QSerialPort::Baud9600);
     thisPort->setParity(QSerialPort::NoParity);
