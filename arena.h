@@ -25,11 +25,13 @@ public:
     explicit Arena(QWidget *parent = 0);
     ~Arena();
     OSV* osv;
+    bool customShowing = false;
     QPoint metersToPixels(Point inMeters);
     int metersToPixels(float length);
     float getDistance(int index);
     Point destination;
     Point startingLocation;
+    Point customCoordinate;
 
     struct Obstacle {
         Point location;
@@ -41,6 +43,8 @@ public:
 private slots:
     void refresh();
     void randomize();
+    void customButtonClicked(int arg1);
+    void customCoordinateChanged(float value, bool isX);
 
 private:
     Ui::Arena *ui;

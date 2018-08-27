@@ -11,11 +11,18 @@ Arena::Arena(QWidget *parent) :
     refreshTimer = new QTimer();
     connect(refreshTimer, SIGNAL(timeout()), this, SLOT(refresh()));
     refreshTimer->start(20);
+    customCoordinate.x = 0;
+    customCoordinate.y = 0;
 }
 
 Arena::~Arena()
 {
     delete ui;
+}
+
+void Arena::customButtonClicked(int arg1)
+{
+    this->customShowing = (arg1 == 2);
 }
 
 void Arena::refresh()
@@ -175,9 +182,6 @@ void Arena::refresh()
         collision = true;
     }
 
-
-
-
     if(collision) {
         osv->location.x = osv->prevLocation.x;
         osv->location.y = osv->prevLocation.y;
@@ -227,6 +231,19 @@ void Arena::paintEvent(QPaintEvent *event)//why does this method need a paramete
     }
 
     paint.drawEllipse(metersToPixels(destination), metersToPixels(TARGET_DIAMETER / 2), metersToPixels(TARGET_DIAMETER / 2));
+
+    if(customShowing) {
+        paint.drawEllipse(metersToPixels(customCoordinate), metersToPixels(TARGET_DIAMETER / 2), metersToPixels(TARGET_DIAMETER / 2));
+    }
+}
+
+void Arena::customCoordinateChanged(float value, bool isX)
+{
+    if(isX) {
+        customCoordinate.x = value;
+    } else {
+        customCoordinate.y = value;
+    }
 }
 
 int Arena::metersToPixels(float length)
