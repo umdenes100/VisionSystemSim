@@ -33,6 +33,13 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
+    <widget class="QPushButton" name="ResetButton">
+     <property name="text">
+      <string>Reset</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QPushButton" name="RandomizeButton">
      <property name="text">
       <string>Randomize</string>

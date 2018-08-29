@@ -10,6 +10,7 @@ CommunicationWidget::CommunicationWidget(QWidget *parent) :
     connect(refreshTimer, SIGNAL(timeout()), this, SLOT(checkPorts()));
     connect(ui->comboBox, SIGNAL(activated(QString)), this, SLOT(setPort(QString)));
     refreshTimer->start(500);
+    thisPort = NULL;
 }
 
 CommunicationWidget::~CommunicationWidget()

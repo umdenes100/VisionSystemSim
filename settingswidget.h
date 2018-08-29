@@ -21,6 +21,7 @@ public:
 
 signals:
     void randomizeClicked();
+    void resetClicked();
     void customClicked(int arg1);
     void coordinateChanged(float value, bool isX);
 
@@ -34,6 +35,8 @@ private slots:
     void on_CustomX_valueChanged(double arg1);
 
     void on_CustomY_valueChanged(double arg1);
+
+    void on_ResetButton_clicked();
 
 private:
     Ui::SettingsWidget *ui;

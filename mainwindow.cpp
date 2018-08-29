@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->communicationwidget->arena = ui->arena;
     ui->settingswidget->osv = ui->arena->osv;
     connect(ui->settingswidget, SIGNAL(randomizeClicked()), ui->arena, SLOT(randomize()));
+    connect(ui->settingswidget, SIGNAL(resetClicked()), ui->arena, SLOT(reset()));
     connect(ui->settingswidget, SIGNAL(customClicked(int)), ui->arena, SLOT(customButtonClicked(int)));
     connect(ui->settingswidget, SIGNAL(coordinateChanged(float,bool)), ui->arena, SLOT(customCoordinateChanged(float,bool)));
 }

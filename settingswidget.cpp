@@ -39,3 +39,8 @@ void SettingsWidget::on_CustomY_valueChanged(double arg1)
 {
     emit coordinateChanged((float)arg1, false);
 }
+
+void SettingsWidget::on_ResetButton_clicked()
+{
+    emit resetClicked();
+}

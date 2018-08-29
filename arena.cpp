@@ -363,6 +363,13 @@ void Arena::randomize()
     osv->destination = destination;
 }
 
+void Arena::reset()
+{
+    osv->setLeftPWM(0);
+    osv->setRightPWM(0);
+    osv->setLocation(startingLocation);
+}
+
 float Arena::getDistance(int index)
 {
 
