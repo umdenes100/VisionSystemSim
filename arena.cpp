@@ -1,3 +1,4 @@
+#include <math.h>
 #include "arena.h"
 #include "ui_arena.h"
 

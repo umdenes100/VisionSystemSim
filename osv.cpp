@@ -1,3 +1,4 @@
+#include <math.h>
 #include "osv.h"
 
 OSV::OSV(QObject *parent) : QObject(parent)
