@@ -34,6 +34,7 @@ void CommunicationWidget::setPort(QString name)
         thisPort->open(QSerialPort::ReadWrite);
     }
     connect(thisPort, SIGNAL(readyRead()), this, SLOT(read()));
+    ui->comboBox->setCurrentIndex(ui->comboBox->findText(name));
 }
 
 void CommunicationWidget::read()
@@ -118,8 +119,10 @@ void CommunicationWidget::executeCommand()
 void CommunicationWidget::checkPorts()
 {
     QList<QSerialPortInfo> ports = QSerialPortInfo::availablePorts();
+    QString currName = ui->comboBox->currentText();
     ui->comboBox->clear();
     foreach(QSerialPortInfo port, ports) {
         ui->comboBox->addItem(port.portName());
     }
+    ui->comboBox->setCurrentIndex(ui->comboBox->findText(currName));
 }
