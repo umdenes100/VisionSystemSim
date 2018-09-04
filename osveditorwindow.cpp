@@ -1,5 +1,6 @@
 #include "osveditorwindow.h"
 #include "ui_osveditorwindow.h"
+#include <QPainter>
 
 OSVEditorWindow::OSVEditorWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -113,15 +114,15 @@ void OSVEditorWindow::paintEvent(QPaintEvent *e)
     int widthPx = 229;
     int heightPx = 239;
 
-    paint.translate(width() / 2 - widthPx / 2, height() / 2 - heightPx / 2);
+    //paint.translate(width() / 2 - widthPx / 2, height() / 2 - heightPx / 2);
 
+    QPainter painter(this);
 
-    paint.fillRect(0, 0, widthPx, 28, QColor(80,80,80));
-    paint.fillRect(0, heightPx - 28, widthPx, 28, QColor(80,80,80));
+    painter.drawImage((this->width() - osv->osvImage.width()) / 2, (this->height() - osv->osvImage.height()) / 2, osv->osvImage);
+
     QPen pen2(Qt::black);
     pen2.setWidth(5);
     paint.setPen(pen2);
-    paint.fillRect(20, 50, widthPx - 40, heightPx - 100, Qt::black);
 }
 
 void OSVEditorWindow::buttonPressed(int index)
