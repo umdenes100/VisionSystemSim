@@ -9,8 +9,14 @@ NOTE: This simulator is provided as a convinence. Even though your code may work
 To run the Vision System Simulator, you will need four things:
 1. The Arduino IDE, available [here](https://www.arduino.cc/en/Main/Software#download). Follow the instructions on the website to download the IDE.
 2. The Arduino Library that interfaces with the simulator. You will use this library to control the simulated OSV. It comes with an example sketch to get you started. To download the library, go to [this Github repository](https://github.com/umdenes100/SimulatorArduinoLibrary) and click on the green button that says 'Clone or Download', then click 'Download ZIP'.  Open the Arduino IDE and install the library by going to Sketch > Include Library > Add .ZIP Library and selecting the downloaded file.
-3. The VisionSystemSimulator, available for Windows and MacOS **todo: add link here**
-4. An Arduino board and USB cable. Your instructor will provide these materials to you.
+3. An Arduino board and USB cable. Your instructor will provide these materials to you.
+
+### Windows Installation ###
+1. Follow this link (Todo) to download the vision system installer.
+2. Run the installer and follow the prompts to install it on your machine.
+3. Open the simulator (should be in your start menu).
+
+### Mac Installation ###
 
 ## Usage ##
 
