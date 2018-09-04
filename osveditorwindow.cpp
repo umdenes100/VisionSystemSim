@@ -111,11 +111,6 @@ void OSVEditorWindow::paintEvent(QPaintEvent *e)
     pen.setWidth(5);
     paint.setPen(pen);
 
-    int widthPx = 229;
-    int heightPx = 239;
-
-    //paint.translate(width() / 2 - widthPx / 2, height() / 2 - heightPx / 2);
-
     QPainter painter(this);
 
     painter.drawImage((this->width() - osv->osvImage.width()) / 2, (this->height() - osv->osvImage.height()) / 2, osv->osvImage);
