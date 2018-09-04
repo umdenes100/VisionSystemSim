@@ -32,6 +32,7 @@ If you wish to take your simulator code and move it onto the physical tanks, the
 6. replace all instances of 'tank.location' and 'tank.destination' with 'enes.location' and 'enes.destination'.
 7. replace all instances of 'tank.print' with 'enes.print'.
 8. re-implement the distance sensor function on your own.
+
 Once you have completed these steps, you should be able to upload your navigation code to a physical tank. WARNING: Even though your code may work on the simulator, that does not nessesarily guarantee that it will work in real life. The simulator is meant to serve as a tool to assist in the programming process and is not 100% indicative of real life conditions. To ensure that your code will work on your osv, you will need to test in the real world.
 
 ## Simulator Library ##
