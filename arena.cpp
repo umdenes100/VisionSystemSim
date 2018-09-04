@@ -6,12 +6,13 @@ Arena::Arena(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Arena)
 {
+    timeElapsed = QTime::currentTime();
     osv = new OSV();
     randomize();
     ui->setupUi(this);
     refreshTimer = new QTimer();
-    connect(refreshTimer, SIGNAL(timeout()), this, SLOT(refresh()));
-    refreshTimer->start(20);
+    connect(refreshTimer, SIGNAL(timeout()), this, SLOT(timerTick()));
+    refreshTimer->start(3);
     customCoordinate.x = 0;
     customCoordinate.y = 0;
 }
@@ -19,6 +20,14 @@ Arena::Arena(QWidget *parent) :
 Arena::~Arena()
 {
     delete ui;
+}
+
+void Arena::timerTick()
+{
+    if(timeElapsed.elapsed() > 30) {
+        timeElapsed = QTime::currentTime();
+        refresh();
+    }
 }
 
 void Arena::customButtonClicked(int arg1)

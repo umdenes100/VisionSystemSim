@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QPainter>
 #include <QTimer>
+#include <QTime>
 #include <stdlib.h>
 #include <QLineF>
 #include <QPointF>
@@ -41,6 +42,7 @@ public:
     Obstacle obstacles[3];
 
 private slots:
+    void timerTick();
     void refresh();
     void randomize();
     void reset();
@@ -52,6 +54,7 @@ private:
     void paintEvent(QPaintEvent *event);
     void updateDestination();
     QTimer* refreshTimer;
+    QTime timeElapsed;
     int arenaWidthPx, arenaHeightPx;
     int xOffsetPx, yOffsetPx;
 
