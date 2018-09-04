@@ -27,7 +27,7 @@ Then, enable all of the distance sensors that your code will be using by opening
 Now, click on 'Select Port' and then click on the port your Arduino is connected to.
 The simulated OSV will now execute the navigation code that was uploaded to it. If you want to re-run the navigation, unplug the Arduino, click 'Reset', plug the Arduino back in, and reselect the port. If you want to run the navigation again but with a different obstacle randomization, unplug the Arduino, click 'Randomize', plug the Arduino back in, and reselect the port.
 
-### Moving off of the simulator ###
+## Moving off of the simulator ##
 If you wish to take your simulator code and move it onto the physical tanks, there are a few basic steps to follow:
 1. Switch library from simulation.h to enes100.h and DFRTank.h.
 2. locate the line 'DFRTankSimulation tank;' in your code and replace it with 'DFRTank tank;'
