@@ -54,10 +54,18 @@
     </widget>
    </item>
    <item>
-    <widget class="QDoubleSpinBox" name="CustomX"/>
+    <widget class="QDoubleSpinBox" name="CustomX">
+     <property name="singleStep">
+      <double>0.010000000000000</double>
+     </property>
+    </widget>
    </item>
    <item>
-    <widget class="QDoubleSpinBox" name="CustomY"/>
+    <widget class="QDoubleSpinBox" name="CustomY">
+     <property name="singleStep">
+      <double>0.010000000000000</double>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QPushButton" name="OSVButton">
