@@ -44,3 +44,8 @@ void SettingsWidget::on_ResetButton_clicked()
 {
     emit resetClicked();
 }
+
+void SettingsWidget::on_documentationButton_clicked()
+{
+    QDesktopServices::openUrl(QUrl("https://github.com/umdenes100/VisionSystemSim"));
+}

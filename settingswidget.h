@@ -2,7 +2,8 @@
 #define SETTINGSWIDGET_H
 
 #include <QWidget>
-
+#include <QDesktopServices>
+#include <QUrl>
 #include "osveditorwindow.h"
 #include "osv.h"
 
@@ -37,6 +38,8 @@ private slots:
     void on_CustomY_valueChanged(double arg1);
 
     void on_ResetButton_clicked();
+
+    void on_documentationButton_clicked();
 
 private:
     Ui::SettingsWidget *ui;
