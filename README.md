@@ -41,18 +41,18 @@ The Simulator library serves as a bridge between the arduino and the simulator p
 ### Coordinate Object ###
 The Simulation and ENES100 libraries also includes a Coordinate class that holds an x, y, and theta. Students may use Coordinates in their code as desired. The destination and location members of Enes100 are Coordinate objects. The x, y, and theta are accessed in the same way as in destination and location, i.e. coordinate.x, coordinate.y, and coordinate.theta. For convenience, we have included 3 constructors for the Coordinate object.
 
-`
+```
 Coordinate coordinate1(); // Represents the point (0, 0, 0)
 Coordinate coordinate2(1.2, 0.7); // Represents the point (1.2, 0.7, 0)
 Coordinate coordinate3(1.2, 0.7, 1.1); // Represents the point (1.2, 0.7, 1.1)
-`
+```
 
 For the Black Box mission, the base objective must be transmitted using a Coordinate object.
 
-`
+```
 Coordinate blackBox(3.2, 1.6);
 baseObjective(blackBox);
-`
+```
 
 ### Function Definitions ###
 `void DFRTankSimulation::turnOffMotors()`
