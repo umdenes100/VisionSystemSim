@@ -2,7 +2,8 @@
 
 ## Youtube Video explaining download and installation instructions ##
 This video explains the steps to download and install the VisionSystemSimulator on your computer. It is assumed that you are running an relatively recent operating system, you have an Arduino board with cable, and you have already downloaded the Arduino IDE. 
-The instructions in this video are also outlined below in the 'Setup' section.
+The instructions in this video are also outlined below in the 'Setup' section. Click on the thumbnail below to be redirected to the Youtube video. 
+
 [![Alt text](https://img.youtube.com/vi/AhzrnlTvZ7s/0.jpg)](https://www.youtube.com/watch?v=AhzrnlTvZ7s)
 
 ## Summary ##
