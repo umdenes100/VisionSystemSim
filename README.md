@@ -1,5 +1,10 @@
 # VisionSystemSim #
 
+## Youtube Video explaining download and installation instructions ##
+This video explains the steps to download and install the VisionSystemSimulator on your computer. It is assumed that you are running an relatively recent operating system, you have an Arduino board with cable, and you have already downloaded the Arduino IDE. 
+The instructions in this video are also outlined below in the 'Setup' section.
+[![Alt text](https://img.youtube.com/vi/AhzrnlTvZ7s/0.jpg)](https://www.youtube.com/watch?v=AhzrnlTvZ7s)
+
 ## Summary ##
 The Vision System Simulator is a tool that will provide students with an avenue to test navigation code without having access to a physical tank. The program is written in C++ and communicates with a physical arduino board over serial port to execute a navigation program which is uploaded on the arduino board. It is designed to mimic the API used for RF and tank communication which will be used later on in the course. It is also designed to current mission specifications, ensuring that the navigation code will be executed on relevant randomizations. The OSV in the simulation is designed to move and look like the tanks provided by the course for testing. 
 
@@ -8,7 +13,7 @@ NOTE: This simulator is provided as a convinence. Even though your code may work
 ## Setup ##
 To run the Vision System Simulator, you will need four things:
 1. The Arduino IDE, available [here](https://www.arduino.cc/en/Main/Software#download). Follow the instructions on the website to download the IDE.
-2. The Arduino Library that interfaces with the simulator. You will use this library to control the simulated OSV. It comes with an example sketch to get you started. To download the library, go to [this Github repository](https://github.com/umdenes100/SimulatorArduinoLibrary) and click on the green button that says 'Clone or Download', then click 'Download ZIP'.  Open the Arduino IDE and install the library by going to Sketch > Include Library > Add .ZIP Library and selecting the downloaded file.
+2. The Arduino Library that interfaces with the simulator. You will use this library to control the simulated OSV. It comes with an example sketch to get you started. To download the library, go to [this Github repository](https://github.com/umdenes100/SimulatorArduinoLibrary) and click on the green button that says 'Clone or Download', then click 'Download ZIP'.  Open the Arduino IDE and install the library by going to Sketch > Include Library > Add .ZIP Library and selecting the downloaded file. Note: You can also download the library from the ENES100 Portal on ELMS if you prefer. 
 3. An Arduino board and USB cable. Your instructor will provide these materials to you.
 4. The VisionSystemSimulator Application. Download the application by following [these instructions](https://github.com/umdenes100/VisionSystemSimulatorInstallers/blob/master/README.md) for your operating system.
 
