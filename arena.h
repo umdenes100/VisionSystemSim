@@ -48,6 +48,7 @@ private slots:
     void reset();
     void customButtonClicked(int arg1);
     void customCoordinateChanged(float value, bool isX);
+    void entropyChanged(int newEntropy);
 
 private:
     Ui::Arena *ui;
@@ -57,6 +58,7 @@ private:
     QTime timeElapsed;
     int arenaWidthPx, arenaHeightPx;
     int xOffsetPx, yOffsetPx;
+    int entropy;
 
     inline float max(float a, float b);
     inline float min(float a, float b);

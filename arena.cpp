@@ -15,6 +15,7 @@ Arena::Arena(QWidget *parent) :
     refreshTimer->start(3);
     customCoordinate.x = 0;
     customCoordinate.y = 0;
+    entropy = 0;
 }
 
 Arena::~Arena()
@@ -254,6 +255,11 @@ void Arena::customCoordinateChanged(float value, bool isX)
     } else {
         customCoordinate.y = value;
     }
+}
+
+void Arena::entropyChanged(int newEntropy)
+{
+    entropy = newEntropy;
 }
 
 int Arena::metersToPixels(float length)

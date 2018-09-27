@@ -25,6 +25,7 @@ signals:
     void resetClicked();
     void customClicked(int arg1);
     void coordinateChanged(float value, bool isX);
+    void sliderMoved(int pos);
 
 private slots:
     void on_RandomizeButton_clicked();
@@ -40,6 +41,8 @@ private slots:
     void on_ResetButton_clicked();
 
     void on_documentationButton_clicked();
+
+    void on_horizontalSlider_valueChanged(int value);
 
 private:
     Ui::SettingsWidget *ui;

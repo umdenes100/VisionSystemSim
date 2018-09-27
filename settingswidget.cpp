@@ -49,3 +49,8 @@ void SettingsWidget::on_documentationButton_clicked()
 {
     QDesktopServices::openUrl(QUrl("https://github.com/umdenes100/VisionSystemSim"));
 }
+
+void SettingsWidget::on_horizontalSlider_valueChanged(int value)
+{
+    emit sliderMoved(value);
+}

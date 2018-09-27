@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->settingswidget, SIGNAL(resetClicked()), ui->arena, SLOT(reset()));
     connect(ui->settingswidget, SIGNAL(customClicked(int)), ui->arena, SLOT(customButtonClicked(int)));
     connect(ui->settingswidget, SIGNAL(coordinateChanged(float,bool)), ui->arena, SLOT(customCoordinateChanged(float,bool)));
+    connect(ui->settingswidget, SIGNAL(sliderMoved(int)), ui->arena, SLOT(entropyChanged(int)));
 }
 
 MainWindow::~MainWindow()
