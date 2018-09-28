@@ -1,6 +1,10 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QtNetwork>
+#include <QEventLoop>
+#include <QDebug>
+#include <QUrl>
 #include <QMainWindow>
 
 namespace Ui {
@@ -17,6 +21,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    void checkForUpdates();
 };
 
 #endif // MAINWINDOW_H
