@@ -105,14 +105,34 @@ void OSV::refreshLocation()
 
 }
 
-void OSV::setLeftPWM(int pwm)
+void OSV::setLeftPWM(int pwm, int entropy)
 {
-    leftPWM = pwm;
+    if (pwm == 0) {
+        leftPWM = 0;
+        return;
+    }
+    time_t t;
+    srand((unsigned) time(&t));
+    std::normal_distribution<double> entropy_dist (pwm, pwm * entropy / (255 * 5));
+    std::default_random_engine gen;
+    gen.seed(rand());
+    leftPWM = entropy_dist(gen);
+    leftPWM = MAX(-255,MIN(255, leftPWM));
 }
 
-void OSV::setRightPWM(int pwm)
+void OSV::setRightPWM(int pwm, int entropy)
 {
-    rightPWM = pwm;
+    if (pwm == 0) {
+        rightPWM = 0;
+        return;
+    }
+    time_t t;
+    srand((unsigned) time(&t));
+    std::normal_distribution<double> entropy_dist (pwm,pwm * entropy / (255 * 5));
+    std::default_random_engine gen;
+    gen.seed(rand());
+    rightPWM = entropy_dist(gen);
+    rightPWM = MAX(-255, MIN(255,rightPWM));
 }
 
 void OSV::toggleSensor(int index)

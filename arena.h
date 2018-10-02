@@ -33,6 +33,7 @@ public:
     Point destination;
     Point startingLocation;
     Point customCoordinate;
+    int getEntropy();
 
     struct Obstacle {
         Point location;

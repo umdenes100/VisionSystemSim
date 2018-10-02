@@ -13,6 +13,7 @@ Arena::Arena(QWidget *parent) :
     refreshTimer = new QTimer();
     connect(refreshTimer, SIGNAL(timeout()), this, SLOT(timerTick()));
     refreshTimer->start(3);
+
     customCoordinate.x = 0;
     customCoordinate.y = 0;
     entropy = 0;
@@ -247,6 +248,13 @@ void Arena::entropyChanged(int newEntropy)
 {
     //entropy ranges from 0 to 99
     entropy = newEntropy;
+    osv->setLeftPWM(osv->leftPWM, entropy);
+    osv->setRightPWM(osv->rightPWM, entropy);
+}
+
+int Arena::getEntropy()
+{
+    return entropy;
 }
 
 int Arena::metersToPixels(float length)
@@ -275,8 +283,8 @@ void Arena::randomize()
     time_t t;
     srand((unsigned) time(&t));
 
-    osv->setLeftPWM(0);
-    osv->setRightPWM(0);
+    osv->setLeftPWM(0, entropy);
+    osv->setRightPWM(0,entropy);
 
     static const float quadrantBounds[4][4] = {
         // Min x, Max x, Min y, Max y
@@ -368,8 +376,8 @@ void Arena::randomize()
 
 void Arena::reset()
 {
-    osv->setLeftPWM(0);
-    osv->setRightPWM(0);
+    osv->setLeftPWM(0,entropy);
+    osv->setRightPWM(0,entropy);
     osv->setLocation(startingLocation);
 }
 

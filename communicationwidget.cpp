@@ -95,14 +95,14 @@ void CommunicationWidget::executeCommand()
     if(commandBuffer[0] == 'l') {
         // set left pwm
         commandBuffer.remove("l");
-        osv->setLeftPWM(commandBuffer.toInt());
+        osv->setLeftPWM(commandBuffer.toInt(), arena->getEntropy());
         return;
     }
 
     if(commandBuffer[0] == 'r') {
         //set right pwm
         commandBuffer.remove("r");
-        osv->setRightPWM(commandBuffer.toInt());
+        osv->setRightPWM(commandBuffer.toInt(), arena->getEntropy());
         return;
     }
 

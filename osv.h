@@ -7,12 +7,18 @@
 #include <QDebug>
 #include <QPen>
 #include <QPainter>
+#include <random>
+#include <algorithm>
 
 #include "detail.h"
 #define TANK_SPEED 0.35
 #define ROTATIONS_PER_SECOND 0.16
 #define WOOD_WIDTH 120
 #define MARKER_WIDTH 100
+
+#define MAX(x,y) (((x) > (y)) ? (x) : (y))
+#define MIN(x,y) (((x) < (y)) ? (x) : (y))
+
 
 class OSV : public QObject
 {
@@ -26,20 +32,20 @@ public:
     Point startingLocation;
     Point destination;
     float length, width;
-    void setRightPWM(int pwm);
-    void setLeftPWM(int pwm);
+    void setRightPWM(int pwm, int entropy);
+    void setLeftPWM(int pwm, int entropy);
     void setLocation(Point p);
     float ppm;
     QImage draw();
     QImage osvImage;
     void toggleSensor(int index);
+    int leftPWM, rightPWM;
 
 signals:
 
 public slots:
 
 private:
-    int leftPWM, rightPWM;
 };
 
 #endif // OSV_H
