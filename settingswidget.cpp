@@ -18,26 +18,11 @@ void SettingsWidget::on_RandomizeButton_clicked()
     emit randomizeClicked();
 }
 
-void SettingsWidget::on_CustomPointCheck_stateChanged(int arg1)
-{
-    emit customClicked(arg1);
-}
-
 void SettingsWidget::on_OSVButton_clicked()
 {
     OSVEditorWindow *window = new OSVEditorWindow(this);
     window->init(osv);
     window->show();
-}
-
-void SettingsWidget::on_CustomX_valueChanged(double arg1)
-{
-    emit coordinateChanged((float)arg1, true);
-}
-
-void SettingsWidget::on_CustomY_valueChanged(double arg1)
-{
-    emit coordinateChanged((float)arg1, false);
 }
 
 void SettingsWidget::on_ResetButton_clicked()

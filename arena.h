@@ -46,8 +46,6 @@ private slots:
     void refresh();
     void randomize();
     void reset();
-    void customButtonClicked(int arg1);
-    void customCoordinateChanged(float value, bool isX);
     void entropyChanged(int newEntropy);
 
 private:

@@ -31,11 +31,6 @@ void Arena::timerTick()
     }
 }
 
-void Arena::customButtonClicked(int arg1)
-{
-    this->customShowing = (arg1 == 2);
-}
-
 void Arena::refresh()
 {
     osv->refreshLocation();
@@ -248,17 +243,9 @@ void Arena::paintEvent(QPaintEvent *event)//why does this method need a paramete
     }
 }
 
-void Arena::customCoordinateChanged(float value, bool isX)
-{
-    if(isX) {
-        customCoordinate.x = value;
-    } else {
-        customCoordinate.y = value;
-    }
-}
-
 void Arena::entropyChanged(int newEntropy)
 {
+    //entropy ranges from 0 to 99
     entropy = newEntropy;
 }
 

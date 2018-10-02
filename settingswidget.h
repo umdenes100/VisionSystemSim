@@ -23,8 +23,6 @@ public:
 signals:
     void randomizeClicked();
     void resetClicked();
-    void customClicked(int arg1);
-    void coordinateChanged(float value, bool isX);
     void sliderMoved(int pos);
 
 private slots:
@@ -32,17 +30,13 @@ private slots:
 
     void on_OSVButton_clicked();
 
-    void on_CustomPointCheck_stateChanged(int arg1);
-
-    void on_CustomX_valueChanged(double arg1);
-
-    void on_CustomY_valueChanged(double arg1);
-
     void on_ResetButton_clicked();
 
     void on_documentationButton_clicked();
 
     void on_horizontalSlider_valueChanged(int value);
+
+    //void on_CustomY_valueChanged(const QString &arg1);
 
 private:
     Ui::SettingsWidget *ui;
