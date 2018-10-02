@@ -46,6 +46,7 @@ signals:
 public slots:
 
 private:
+    int prevLeftPWM, prevRightPWM;
 };
 
 #endif // OSV_H

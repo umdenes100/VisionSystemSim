@@ -12,7 +12,10 @@ OSV::OSV(QObject *parent) : QObject(parent)
     width = 0.229;
     length = 0.239;
     location.theta = 0;
-    leftPWM = rightPWM = 0;
+    leftPWM = 0;
+    rightPWM = 0;
+    prevLeftPWM = 0;
+    prevRightPWM = 0;
 
     const int widthPx = 229;
     const int heightPx = 239;
@@ -107,10 +110,11 @@ void OSV::refreshLocation()
 
 void OSV::setLeftPWM(int pwm, int entropy)
 {
-    if (pwm == 0) {
-        leftPWM = 0;
+    if (pwm == prevLeftPWM) {
+        //prevent repeated calls from resetting pwm to avoid averaging of randomness
         return;
     }
+    prevLeftPWM = pwm;
     time_t t;
     srand((unsigned) time(&t));
     std::normal_distribution<double> entropy_dist (pwm, pwm * entropy / (255 * 5));
@@ -122,10 +126,11 @@ void OSV::setLeftPWM(int pwm, int entropy)
 
 void OSV::setRightPWM(int pwm, int entropy)
 {
-    if (pwm == 0) {
-        rightPWM = 0;
+    if (pwm == prevRightPWM) {
+        //prevent repeated calls from resetting pwm to avoid averaging of randomness
         return;
     }
+    prevRightPWM = pwm;
     time_t t;
     srand((unsigned) time(&t));
     std::normal_distribution<double> entropy_dist (pwm,pwm * entropy / (255 * 5));
