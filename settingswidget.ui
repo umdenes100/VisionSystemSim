@@ -103,8 +103,20 @@
    </item>
    <item>
     <widget class="QSlider" name="horizontalSlider">
+     <property name="maximum">
+      <number>9</number>
+     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="invertedAppearance">
+      <bool>false</bool>
+     </property>
+     <property name="tickPosition">
+      <enum>QSlider::TicksBothSides</enum>
+     </property>
+     <property name="tickInterval">
+      <number>1</number>
      </property>
     </widget>
    </item>

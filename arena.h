@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <QLineF>
 #include <QPointF>
+#include <math.h>
 
 #include "osv.h"
 #include "detail.h"
@@ -26,13 +27,11 @@ public:
     explicit Arena(QWidget *parent = 0);
     ~Arena();
     OSV* osv;
-    bool customShowing = false;
     QPoint metersToPixels(Point inMeters);
     int metersToPixels(float length);
     float getDistance(int index);
     Point destination;
     Point startingLocation;
-    Point customCoordinate;
     int getEntropy();
 
     struct Obstacle {
@@ -58,9 +57,6 @@ private:
     int arenaWidthPx, arenaHeightPx;
     int xOffsetPx, yOffsetPx;
     int entropy;
-
-    inline float max(float a, float b);
-    inline float min(float a, float b);
     inline float distance(Point a, QPointF *b);
 };
 

@@ -4,13 +4,13 @@
 OSV::OSV(QObject *parent) : QObject(parent)
 {
     location.x = 0.5;
-    location.y = 1;
-    location.theta = 0;
+    location.y = 1.0;
+    location.theta = 0.0;
     destination.x = 0.0;
     destination.y = 0.0;
 
-    width = 0.229;
-    length = 0.239;
+    width = 0.229f;
+    length = 0.239f;
     location.theta = 0;
     leftPWM = 0;
     rightPWM = 0;
@@ -67,8 +67,8 @@ OSV::OSV(QObject *parent) : QObject(parent)
 
 QImage OSV::draw()
 {
-    int widthPx = width * ppm;
-    int heightPx = length * ppm;
+    int widthPx = static_cast<int>(width * ppm);
+    int heightPx = static_cast<int>(length * ppm);
 
     QImage scaled = osvImage.scaled(widthPx, heightPx);
     QPoint center = scaled.rect().center();
@@ -98,12 +98,13 @@ void OSV::refreshLocation()
         location.theta += 2 * PI;
     }
 
-    float speed = ((TANK_SPEED * ((rightPWM + leftPWM) / 2)) / 255.0) / 50.0;
+    float avgPWM = (rightPWM + leftPWM) / 2;
+    float speed = TANK_SPEED * (avgPWM) / (255.0f * 50.0f);
     location.x = location.x + speed * cos(location.theta);
     location.y = location.y + speed * sin(location.theta);
 
 
-    location.theta += 2 * PI * ROTATIONS_PER_SECOND / 50 * (float)(rightPWM - leftPWM) / 255.0;
+    location.theta += 2 * PI * ROTATIONS_PER_SECOND / 50 * (rightPWM - leftPWM) / 255.0f;
 
 
 }
@@ -116,11 +117,11 @@ void OSV::setLeftPWM(int pwm, int entropy)
     }
     prevLeftPWM = pwm;
     time_t t;
-    srand((unsigned) time(&t));
+    srand(static_cast<unsigned int>(time(&t)));
     std::normal_distribution<double> entropy_dist (pwm, pwm * entropy / (255 * 5));
     std::default_random_engine gen;
-    gen.seed(rand());
-    leftPWM = entropy_dist(gen);
+    gen.seed(static_cast<std::linear_congruential_engine<unsigned int, 16807, 0, 2147483647>::result_type>(rand()));
+    leftPWM = static_cast<int>(entropy_dist(gen));
     leftPWM = MAX(-255,MIN(255, leftPWM));
 }
 
@@ -132,11 +133,11 @@ void OSV::setRightPWM(int pwm, int entropy)
     }
     prevRightPWM = pwm;
     time_t t;
-    srand((unsigned) time(&t));
+    srand(static_cast<unsigned int>(time(&t)));
     std::normal_distribution<double> entropy_dist (pwm,pwm * entropy / (255 * 5));
     std::default_random_engine gen;
-    gen.seed(rand());
-    rightPWM = entropy_dist(gen);
+    gen.seed(static_cast<std::linear_congruential_engine<unsigned int, 16807, 0, 2147483647>::result_type>(rand()));
+    rightPWM = static_cast<int>(entropy_dist(gen));
     rightPWM = MAX(-255, MIN(255,rightPWM));
 }
 

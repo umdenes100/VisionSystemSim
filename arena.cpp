@@ -1,4 +1,3 @@
-#include <math.h>
 #include "arena.h"
 #include "ui_arena.h"
 
@@ -13,9 +12,6 @@ Arena::Arena(QWidget *parent) :
     refreshTimer = new QTimer();
     connect(refreshTimer, SIGNAL(timeout()), this, SLOT(timerTick()));
     refreshTimer->start(3);
-
-    customCoordinate.x = 0;
-    customCoordinate.y = 0;
     entropy = 0;
 }
 
@@ -37,7 +33,7 @@ void Arena::refresh()
     osv->refreshLocation();
 
 
-    // we have to get the slope of the front side of the osv first
+    // points a,b,c,d represent the four corners of the OSV
     Point midPoint;
     midPoint.x = osv->location.x + osv->width / 2 * cos(osv->location.theta);
     midPoint.y = osv->location.y + osv->width / 2 * sin(osv->location.theta);
@@ -66,54 +62,26 @@ void Arena::refresh()
     QLineF leftOSV(a.x, a.y, c.x, c.y);
     QLineF backOSV(c.x, c.y, d.x, d.y);
     QLineF rightOSV(b.x, b.y, d.x, d.y);
+    QLineF osvSides [] = {frontOSV, leftOSV, backOSV, rightOSV};
 
     bool collision = false;
 
-    for(int i = 0; i < 3; i++) {
+    for(Obstacle obstacle:obstacles) {
         // for each of the obstacles
-        QLineF right(obstacles[i].location.x + obstacles[i].width, obstacles[i].location.y, obstacles[i].location.x + obstacles[i].width, obstacles[i].location.y - obstacles[i].length);
-        QLineF bottom(obstacles[i].location.x, obstacles[i].location.y - obstacles[i].length, obstacles[i].location.x + obstacles[i].width, obstacles[i].location.y - obstacles[i].length);
-        QLineF left(obstacles[i].location.x, obstacles[i].location.y - obstacles[i].length, obstacles[i].location.x, obstacles[i].location.y);
-        QLineF top(obstacles[i].location.x, obstacles[i].location.y, obstacles[i].location.x + obstacles[i].width, obstacles[i].location.y);
+        QLineF right(obstacle.location.x + obstacle.width, obstacle.location.y, obstacle.location.x + obstacle.width, obstacle.location.y - obstacle.length);
+        QLineF bottom(obstacle.location.x, obstacle.location.y - obstacle.length, obstacle.location.x + obstacle.width, obstacle.location.y - obstacle.length);
+        QLineF left(obstacle.location.x, obstacle.location.y - obstacle.length, obstacle.location.x, obstacle.location.y);
+        QLineF top(obstacle.location.x, obstacle.location.y, obstacle.location.x + obstacle.width, obstacle.location.y);
+        QLineF obstacleSides [] = {right, bottom, left, top};
 
-        if(right.intersect(frontOSV, NULL) == QLineF::BoundedIntersection) {
-            collision = true;
-            break;
-        }
+        for(QLineF obstacleSide:obstacleSides) {
+            for(QLineF osvSide : osvSides) {
+                if(obstacleSide.intersect(osvSide, nullptr) == QLineF::BoundedIntersection) {
+                    collision = true;
+                    break;
+                }
+            }
 
-        if(right.intersect(backOSV, NULL) == QLineF::BoundedIntersection) {
-            collision = true;
-            break;
-        }
-
-        if(left.intersect(frontOSV, NULL) == QLineF::BoundedIntersection) {
-            collision = true;
-            break;
-        }
-
-        if(left.intersect(backOSV, NULL) == QLineF::BoundedIntersection) {
-            collision = true;
-            break;
-        }
-
-        if(top.intersect(frontOSV, NULL) == QLineF::BoundedIntersection) {
-            collision = true;
-            break;
-        }
-
-        if(top.intersect(backOSV, NULL) == QLineF::BoundedIntersection) {
-            collision = true;
-            break;
-        }
-
-        if(bottom.intersect(frontOSV, NULL) == QLineF::BoundedIntersection) {
-            collision = true;
-            break;
-        }
-
-        if(bottom.intersect(backOSV, NULL) == QLineF::BoundedIntersection) {
-            collision = true;
-            break;
         }
     }
 
@@ -122,71 +90,15 @@ void Arena::refresh()
     QLineF bottom(0.0, 0.0, 4.0, 0.0);
     QLineF left(0.0, 0.0, 0.0, 2.0);
     QLineF top(0.0, 2.0, 4.0, 2.0);
+    QLineF walls [] = {right, bottom, left, top};
 
     //need to check right and left sides of OSV in case OSV is perpendicular to wall
-
-    if(right.intersect(frontOSV, NULL) == QLineF::BoundedIntersection) {
-        collision = true;
-    }
-
-    if(right.intersect(backOSV, NULL) == QLineF::BoundedIntersection) {
-        collision = true;
-    }
-
-    if(right.intersect(rightOSV, NULL) == QLineF::BoundedIntersection) {
-        collision = true;
-    }
-
-    if(right.intersect(leftOSV, NULL) == QLineF::BoundedIntersection) {
-        collision = true;
-    }
-
-    if(left.intersect(frontOSV, NULL) == QLineF::BoundedIntersection) {
-        collision = true;
-    }
-
-    if(left.intersect(backOSV, NULL) == QLineF::BoundedIntersection) {
-        collision = true;
-    }
-
-    if(left.intersect(rightOSV, NULL) == QLineF::BoundedIntersection) {
-        collision = true;
-    }
-
-    if(left.intersect(leftOSV, NULL) == QLineF::BoundedIntersection) {
-        collision = true;
-    }
-
-    if(top.intersect(frontOSV, NULL) == QLineF::BoundedIntersection) {
-        collision = true;
-    }
-
-    if(top.intersect(backOSV, NULL) == QLineF::BoundedIntersection) {
-        collision = true;
-    }
-
-    if(top.intersect(rightOSV, NULL) == QLineF::BoundedIntersection) {
-        collision = true;
-    }
-
-    if(top.intersect(leftOSV, NULL) == QLineF::BoundedIntersection) {
-        collision = true;
-    }
-
-    if(bottom.intersect(frontOSV, NULL) == QLineF::BoundedIntersection) {
-        collision = true;
-    }
-
-    if(bottom.intersect(backOSV, NULL) == QLineF::BoundedIntersection) {
-        collision = true;
-    }
-
-    if(bottom.intersect(rightOSV, NULL) == QLineF::BoundedIntersection) {
-        collision = true;
-    }
-
-    if(bottom.intersect(leftOSV, NULL) == QLineF::BoundedIntersection) {
-        collision = true;
+    for(QLineF wall: walls) {
+        for(QLineF osvSide : osvSides) {
+            if(wall.intersect(osvSide, nullptr) == QLineF::BoundedIntersection) {
+                collision = true;
+            }
+        }
     }
 
     if(collision) {
@@ -239,15 +151,12 @@ void Arena::paintEvent(QPaintEvent *event)//why does this method need a paramete
 
     paint.drawEllipse(metersToPixels(destination), metersToPixels(TARGET_DIAMETER / 2), metersToPixels(TARGET_DIAMETER / 2));
 
-    if(customShowing) {
-        paint.drawEllipse(metersToPixels(customCoordinate), metersToPixels(TARGET_DIAMETER / 2), metersToPixels(TARGET_DIAMETER / 2));
-    }
 }
 
 void Arena::entropyChanged(int newEntropy)
 {
     //entropy ranges from 0 to 99
-    entropy = newEntropy;
+    entropy = newEntropy * 10;      //the entropy starts on a [0,10] interval, we want it on a [0,100] interval
     osv->setLeftPWM(osv->leftPWM, entropy);
     osv->setRightPWM(osv->rightPWM, entropy);
 }
@@ -343,7 +252,7 @@ void Arena::randomize()
                 (rand() % 100) *
                 (quadrantBounds[3][1] - quadrantBounds[3][0] - obstacles[2].width) / 100.0 +
                 quadrantBounds[3][0];
-        obstacles[2].location.y = max(
+        obstacles[2].location.y = MAX(
                 (rand() % 100) *
                 (quadrantBounds[3][3] - quadrantBounds[3][2] - obstacles[2].length) / 100.0 +
                 quadrantBounds[3][2] + obstacles[2].length,
@@ -362,7 +271,7 @@ void Arena::randomize()
                 (rand() % 100) *
                 (quadrantBounds[2][1] - quadrantBounds[2][0] - obstacles[2].width) / 100.0 +
                 quadrantBounds[2][0];
-        obstacles[2].location.y = min(
+        obstacles[2].location.y = MIN(
                 (rand() % 100) *
                 (quadrantBounds[2][3] - quadrantBounds[2][2] - obstacles[2].length) / 100.0 +
                 quadrantBounds[2][2] + obstacles[2].length,
@@ -376,8 +285,8 @@ void Arena::randomize()
 
 void Arena::reset()
 {
-    osv->setLeftPWM(0,entropy);
-    osv->setRightPWM(0,entropy);
+    osv->setLeftPWM(0,0);
+    osv->setRightPWM(0,0);
     osv->setLocation(startingLocation);
 }
 
@@ -435,38 +344,17 @@ float Arena::getDistance(int index)
     float minimumDistance = 1;
     QPointF *tempPoint = new QPointF(0,0);
 
-    for(int i = 0; i < 3; i++) {
+    for(Obstacle obstacle:obstacles) {
         // for each of the obstacles
-        QLineF right(obstacles[i].location.x + obstacles[i].width, obstacles[i].location.y, obstacles[i].location.x + obstacles[i].width, obstacles[i].location.y - obstacles[i].length);
-        QLineF bottom(obstacles[i].location.x, obstacles[i].location.y - obstacles[i].length, obstacles[i].location.x + obstacles[i].width, obstacles[i].location.y - obstacles[i].length);
-        QLineF left(obstacles[i].location.x, obstacles[i].location.y - obstacles[i].length, obstacles[i].location.x, obstacles[i].location.y);
-        QLineF top(obstacles[i].location.x, obstacles[i].location.y, obstacles[i].location.x + obstacles[i].width, obstacles[i].location.y);
+        QLineF right(obstacle.location.x + obstacle.width, obstacle.location.y, obstacle.location.x + obstacle.width, obstacle.location.y - obstacle.length);
+        QLineF bottom(obstacle.location.x, obstacle.location.y - obstacle.length, obstacle.location.x + obstacle.width, obstacle.location.y - obstacle.length);
+        QLineF left(obstacle.location.x, obstacle.location.y - obstacle.length, obstacle.location.x, obstacle.location.y);
+        QLineF top(obstacle.location.x, obstacle.location.y, obstacle.location.x + obstacle.width, obstacle.location.y);
+        QLineF obstacleSides [] = {right, bottom, left, top};
 
-        if(right.intersect(sensorTrace, tempPoint) == QLineF::BoundedIntersection) {
-            float tempDistance = distance(sensorLocations[index], tempPoint);
-            if(tempDistance < minimumDistance) {
-                minimumDistance = tempDistance;
-            }
-        }
-
-        if(left.intersect(sensorTrace, tempPoint) == QLineF::BoundedIntersection) {
-            float tempDistance = distance(sensorLocations[index], tempPoint);
-            if(tempDistance < minimumDistance) {
-                minimumDistance = tempDistance;
-            }
-        }
-
-        if(top.intersect(sensorTrace, tempPoint) == QLineF::BoundedIntersection) {
-            float tempDistance = distance(sensorLocations[index], tempPoint);
-            if(tempDistance < minimumDistance) {
-                minimumDistance = tempDistance;
-            }
-        }
-
-        if(bottom.intersect(sensorTrace, tempPoint) == QLineF::BoundedIntersection) {
-            float tempDistance = distance(sensorLocations[index], tempPoint);
-            if(tempDistance < minimumDistance) {
-                minimumDistance = tempDistance;
+        for(QLineF obstacleSide : obstacleSides) {
+            if(obstacleSide.intersect(sensorTrace, tempPoint) == QLineF::BoundedIntersection) {
+                        minimumDistance = MIN(minimumDistance,distance(sensorLocations[index], tempPoint));
             }
         }
     }
@@ -474,14 +362,6 @@ float Arena::getDistance(int index)
     return minimumDistance;
 }
 
-inline float Arena::max(float a, float b) {
-    return a > b ? a : b;
-}
-
-inline float Arena::min(float a, float b) {
-    return a < b ? a : b;
-}
-
 inline float Arena::distance(Point a, QPointF *b) {
-    return sqrt(pow(a.x - b->x(), 2) + pow(a.y - b->y(), 2));
+    return (sqrt(pow(a.x - b->x(), 2) + pow(a.y - b->y(), 2)));
 }

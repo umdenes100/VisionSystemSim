@@ -10,7 +10,7 @@ CommunicationWidget::CommunicationWidget(QWidget *parent) :
     connect(refreshTimer, SIGNAL(timeout()), this, SLOT(checkPorts()));
     connect(ui->comboBox, SIGNAL(activated(QString)), this, SLOT(setPort(QString)));
     refreshTimer->start(500);
-    thisPort = NULL;
+    thisPort = nullptr;
 }
 
 CommunicationWidget::~CommunicationWidget()
@@ -20,7 +20,7 @@ CommunicationWidget::~CommunicationWidget()
 
 void CommunicationWidget::setPort(QString name)
 {
-    if (thisPort != NULL) {
+    if (thisPort != nullptr) {
         thisPort->close();
     }
     thisPort = new QSerialPort(name, this);

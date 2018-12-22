@@ -11,13 +11,11 @@
 #include <algorithm>
 
 #include "detail.h"
-#define TANK_SPEED 0.35
-#define ROTATIONS_PER_SECOND 0.16
+#define TANK_SPEED 0.35f
+#define ROTATIONS_PER_SECOND 0.16f
 #define WOOD_WIDTH 120
 #define MARKER_WIDTH 100
 
-#define MAX(x,y) (((x) > (y)) ? (x) : (y))
-#define MIN(x,y) (((x) < (y)) ? (x) : (y))
 
 
 class OSV : public QObject

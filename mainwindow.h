@@ -21,7 +21,6 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    void checkForUpdates();
 };
 
 #endif // MAINWINDOW_H
