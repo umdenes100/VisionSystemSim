@@ -32,7 +32,7 @@ void SettingsWidget::on_ResetButton_clicked()
 
 void SettingsWidget::on_documentationButton_clicked()
 {
-    QDesktopServices::openUrl(QUrl("https://github.com/umdenes100/VisionSystemSim"));
+    QDesktopServices::openUrl(QUrl("https://github.com/umdenes100/VisionSystemSim/blob/master/README.md"));
 }
 
 void SettingsWidget::on_horizontalSlider_valueChanged(int value)

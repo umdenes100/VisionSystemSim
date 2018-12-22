@@ -28,13 +28,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp \
     arena.cpp \
     settingswidget.cpp \
     communicationwidget.cpp \
     osv.cpp \
     osveditorwindow.cpp \
-    editorbutton.cpp
+    editorbutton.cpp \
+    mainwindow.cpp
 
 HEADERS += \
         mainwindow.h \

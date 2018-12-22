@@ -174,8 +174,8 @@ int Arena::metersToPixels(double length)
 QPoint Arena::metersToPixels(Point inMeters)
 {
     QPoint inPixels;
-    inPixels.setX(xOffsetPx + arenaWidthPx * static_cast<int>(inMeters.x / 4.0));
-    inPixels.setY(yOffsetPx + arenaHeightPx - arenaHeightPx * static_cast<int>(inMeters.y / 2.0));
+    inPixels.setX(static_cast<int>(xOffsetPx + arenaWidthPx * (inMeters.x / 4.0)));
+    inPixels.setY(static_cast<int>(yOffsetPx + arenaHeightPx - arenaHeightPx * (inMeters.y / 2.0)));
 
     return inPixels;
 }
