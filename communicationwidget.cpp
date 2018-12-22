@@ -69,7 +69,7 @@ void CommunicationWidget::executeCommand()
     // TODO: everythign
 
     if(commandBuffer == "location") {
-        float orientation;
+        double orientation;
         if(osv->location.theta > PI) {
             orientation = osv->location.theta - 2 * PI;
         } else {

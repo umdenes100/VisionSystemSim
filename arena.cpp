@@ -121,7 +121,7 @@ void Arena::paintEvent(QPaintEvent *event)//why does this method need a paramete
 
     // TODO: draw background
 
-    if((float)(width() + 2 * xOffsetPx) / (float)(height() + 2 * yOffsetPx) < 2) {
+    if(static_cast<double>(width() + 2 * xOffsetPx) / static_cast<double>(height() + 2 * yOffsetPx) < 2) {
         arenaWidthPx = width() - 60;
         arenaHeightPx = arenaWidthPx / 2;
 
@@ -168,14 +168,14 @@ int Arena::getEntropy()
 
 int Arena::metersToPixels(double length)
 {
-    return (int)(length * arenaWidthPx / 4.0);
+    return static_cast<int>(length * arenaWidthPx / 4.0);
 }
 
 QPoint Arena::metersToPixels(Point inMeters)
 {
     QPoint inPixels;
-    inPixels.setX(xOffsetPx + arenaWidthPx * (inMeters.x / 4.0));
-    inPixels.setY(yOffsetPx + arenaHeightPx - arenaHeightPx * (inMeters.y / 2.0));
+    inPixels.setX(xOffsetPx + arenaWidthPx * static_cast<int>(inMeters.x / 4.0));
+    inPixels.setY(yOffsetPx + arenaHeightPx - arenaHeightPx * static_cast<int>(inMeters.y / 2.0));
 
     return inPixels;
 }
@@ -190,7 +190,7 @@ void Arena::updateDestination()
 void Arena::randomize()
 {
     time_t t;
-    srand((unsigned) time(&t));
+    srand(static_cast<unsigned>(time(&t)));
 
     osv->setLeftPWM(0, entropy);
     osv->setRightPWM(0,entropy);
