@@ -28,15 +28,15 @@ public:
     ~Arena();
     OSV* osv;
     QPoint metersToPixels(Point inMeters);
-    int metersToPixels(float length);
-    float getDistance(int index);
+    int metersToPixels(double length);
+    double getDistance(int index);
     Point destination;
     Point startingLocation;
     int getEntropy();
 
     struct Obstacle {
         Point location;
-        float length, width;
+        double length, width;
     };
 
     Obstacle obstacles[3];
@@ -57,7 +57,7 @@ private:
     int arenaWidthPx, arenaHeightPx;
     int xOffsetPx, yOffsetPx;
     int entropy;
-    inline float distance(Point a, QPointF *b);
+    inline double distance(Point a, QPointF *b);
 };
 
 #endif // ARENA_H

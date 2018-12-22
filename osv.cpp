@@ -9,8 +9,8 @@ OSV::OSV(QObject *parent) : QObject(parent)
     destination.x = 0.0;
     destination.y = 0.0;
 
-    width = 0.229f;
-    length = 0.239f;
+    width = 0.229;
+    length = 0.239;
     location.theta = 0;
     leftPWM = 0;
     rightPWM = 0;
@@ -98,13 +98,13 @@ void OSV::refreshLocation()
         location.theta += 2 * PI;
     }
 
-    float avgPWM = (rightPWM + leftPWM) / 2;
-    float speed = TANK_SPEED * (avgPWM) / (255.0f * 50.0f);
+    double avgPWM = (rightPWM + leftPWM) / 2;
+    double speed = TANK_SPEED * (avgPWM) / (255.0 * 50.0);
     location.x = location.x + speed * cos(location.theta);
     location.y = location.y + speed * sin(location.theta);
 
 
-    location.theta += 2 * PI * ROTATIONS_PER_SECOND / 50 * (rightPWM - leftPWM) / 255.0f;
+    location.theta += 2 * PI * ROTATIONS_PER_SECOND / 50 * (rightPWM - leftPWM) / 255.0;
 
 
 }

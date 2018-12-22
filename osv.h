@@ -11,8 +11,8 @@
 #include <algorithm>
 
 #include "detail.h"
-#define TANK_SPEED 0.35f
-#define ROTATIONS_PER_SECOND 0.16f
+#define TANK_SPEED 0.35
+#define ROTATIONS_PER_SECOND 0.16
 #define WOOD_WIDTH 120
 #define MARKER_WIDTH 100
 
@@ -29,11 +29,11 @@ public:
     bool sensors[12];
     Point startingLocation;
     Point destination;
-    float length, width;
+    double length, width;
     void setRightPWM(int pwm, int entropy);
     void setLeftPWM(int pwm, int entropy);
     void setLocation(Point p);
-    float ppm;
+    double ppm;
     QImage draw();
     QImage osvImage;
     void toggleSensor(int index);

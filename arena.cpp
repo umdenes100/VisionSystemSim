@@ -166,7 +166,7 @@ int Arena::getEntropy()
     return entropy;
 }
 
-int Arena::metersToPixels(float length)
+int Arena::metersToPixels(double length)
 {
     return (int)(length * arenaWidthPx / 4.0);
 }
@@ -195,7 +195,7 @@ void Arena::randomize()
     osv->setLeftPWM(0, entropy);
     osv->setRightPWM(0,entropy);
 
-    static const float quadrantBounds[4][4] = {
+    static const double quadrantBounds[4][4] = {
         // Min x, Max x, Min y, Max y
         {1.35, 2.25, 1.0, 1.8},
         {1.35, 2.25, 0.2, 1.0},
@@ -213,8 +213,8 @@ void Arena::randomize()
     int largeObstacleQuadrant = rand() % 3;
     for (int i = 0; i < 3; i++) {
         // Reassign sizes based on randomization
-        float d1 = i == largeObstacleQuadrant ? 0.41 : 0.32;
-        float d2 = i == largeObstacleQuadrant ? 0.23 : 0.13;
+        double d1 = i == largeObstacleQuadrant ? 0.41 : 0.32;
+        double d2 = i == largeObstacleQuadrant ? 0.23 : 0.13;
 
         // Random orientation
         if (rand() % 2) {
@@ -290,7 +290,7 @@ void Arena::reset()
     osv->setLocation(startingLocation);
 }
 
-float Arena::getDistance(int index)
+double Arena::getDistance(int index)
 {
 
     if(!osv->sensors[index]) {
@@ -333,7 +333,7 @@ float Arena::getDistance(int index)
     Point sensorLocations[12] {a, midPointFront, b, b, midPointRight, d, d, midPointBack, c, c, midPointLeft, a};
 
     int sideIndex = index / 3;
-    float orientation = osv->location.theta + sideIndex * PI / 2;
+    double orientation = osv->location.theta + sideIndex * PI / 2;
 
     int range = 1;
     Point endPoint;
@@ -341,7 +341,7 @@ float Arena::getDistance(int index)
     endPoint.y = sensorLocations[index].y + range * sin(orientation);
 
     QLineF sensorTrace(sensorLocations[index].x, sensorLocations[index].y, endPoint.x, endPoint.y);
-    float minimumDistance = 1;
+    double minimumDistance = 1.0;
     QPointF *tempPoint = new QPointF(0,0);
 
     for(Obstacle obstacle:obstacles) {
@@ -362,6 +362,6 @@ float Arena::getDistance(int index)
     return minimumDistance;
 }
 
-inline float Arena::distance(Point a, QPointF *b) {
+inline double Arena::distance(Point a, QPointF *b) {
     return (sqrt(pow(a.x - b->x(), 2) + pow(a.y - b->y(), 2)));
 }
