@@ -30,8 +30,8 @@ public:
     Point startingLocation;
     Point destination;
     double length, width;
-    void setRightPWM(int pwm, int entropy);
-    void setLeftPWM(int pwm, int entropy);
+    void setRightPWM(int pwm, bool entropy);
+    void setLeftPWM(int pwm, bool entropy);
     void setLocation(Point p);
     double ppm;
     QImage draw();

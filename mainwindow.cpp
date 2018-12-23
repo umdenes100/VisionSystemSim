@@ -11,7 +11,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->settingswidget->osv = ui->arena->osv;
     connect(ui->settingswidget, SIGNAL(randomizeClicked()), ui->arena, SLOT(randomize()));
     connect(ui->settingswidget, SIGNAL(resetClicked()), ui->arena, SLOT(reset()));
-    connect(ui->settingswidget, SIGNAL(sliderMoved(int)), ui->arena, SLOT(entropyChanged(int)));
+    connect(ui->settingswidget, SIGNAL(entropyBoxChanged(bool)), ui->arena, SLOT(entropyChanged(bool)));
+    connect(ui->settingswidget, SIGNAL(obstaclesBoxChanged(bool)), ui->arena, SLOT(obstaclesToggled(bool)));
 }
 
 MainWindow::~MainWindow()

@@ -12,7 +12,8 @@ Arena::Arena(QWidget *parent) :
     refreshTimer = new QTimer();
     connect(refreshTimer, SIGNAL(timeout()), this, SLOT(timerTick()));
     refreshTimer->start(3);
-    entropy = 0;
+    entropyEnabled = false;
+    obstaclesEnabled = true;
 }
 
 Arena::~Arena()
@@ -65,23 +66,24 @@ void Arena::refresh()
     QLineF osvSides [] = {frontOSV, leftOSV, backOSV, rightOSV};
 
     bool collision = false;
+    if (obstaclesEnabled) {
+        for(Obstacle obstacle:obstacles) {
+            // for each of the obstacles
+            QLineF right(obstacle.location.x + obstacle.width, obstacle.location.y, obstacle.location.x + obstacle.width, obstacle.location.y - obstacle.length);
+            QLineF bottom(obstacle.location.x, obstacle.location.y - obstacle.length, obstacle.location.x + obstacle.width, obstacle.location.y - obstacle.length);
+            QLineF left(obstacle.location.x, obstacle.location.y - obstacle.length, obstacle.location.x, obstacle.location.y);
+            QLineF top(obstacle.location.x, obstacle.location.y, obstacle.location.x + obstacle.width, obstacle.location.y);
+            QLineF obstacleSides [] = {right, bottom, left, top};
 
-    for(Obstacle obstacle:obstacles) {
-        // for each of the obstacles
-        QLineF right(obstacle.location.x + obstacle.width, obstacle.location.y, obstacle.location.x + obstacle.width, obstacle.location.y - obstacle.length);
-        QLineF bottom(obstacle.location.x, obstacle.location.y - obstacle.length, obstacle.location.x + obstacle.width, obstacle.location.y - obstacle.length);
-        QLineF left(obstacle.location.x, obstacle.location.y - obstacle.length, obstacle.location.x, obstacle.location.y);
-        QLineF top(obstacle.location.x, obstacle.location.y, obstacle.location.x + obstacle.width, obstacle.location.y);
-        QLineF obstacleSides [] = {right, bottom, left, top};
-
-        for(QLineF obstacleSide:obstacleSides) {
-            for(QLineF osvSide : osvSides) {
-                if(obstacleSide.intersect(osvSide, nullptr) == QLineF::BoundedIntersection) {
-                    collision = true;
-                    break;
+            for(QLineF obstacleSide:obstacleSides) {
+                for(QLineF osvSide : osvSides) {
+                    if(obstacleSide.intersect(osvSide, nullptr) == QLineF::BoundedIntersection) {
+                        collision = true;
+                        break;
+                    }
                 }
-            }
 
+            }
         }
     }
 
@@ -144,26 +146,30 @@ void Arena::paintEvent(QPaintEvent *event)//why does this method need a paramete
     QImage osvImage = osv->draw();
 
     paint.drawImage(metersToPixels(osv->location) - osvImage.rect().center(), osvImage);
-
-    for(int i = 0; i < 3; i++) {
-        paint.fillRect(metersToPixels(obstacles[i].location).x(), metersToPixels(obstacles[i].location).y(), metersToPixels(obstacles[i].width), metersToPixels(obstacles[i].length), QColor(170, 146, 110));
+    if (obstaclesEnabled){
+        for(int i = 0; i < 3; i++) {
+            paint.fillRect(metersToPixels(obstacles[i].location).x(), metersToPixels(obstacles[i].location).y(), metersToPixels(obstacles[i].width), metersToPixels(obstacles[i].length), QColor(170, 146, 110));
+        }
     }
 
     paint.drawEllipse(metersToPixels(destination), metersToPixels(TARGET_DIAMETER / 2), metersToPixels(TARGET_DIAMETER / 2));
 
 }
 
-void Arena::entropyChanged(int newEntropy)
+void Arena::entropyChanged(bool enabled)
 {
-    //entropy ranges from 0 to 99
-    entropy = newEntropy * 10;      //the entropy starts on a [0,10] interval, we want it on a [0,100] interval
-    osv->setLeftPWM(osv->leftPWM, entropy);
-    osv->setRightPWM(osv->rightPWM, entropy);
+    entropyEnabled = enabled;
+    osv->setLeftPWM(osv->leftPWM, entropyEnabled);
+    osv->setRightPWM(osv->rightPWM, entropyEnabled);
+}
+void Arena::obstaclesToggled(bool enabled)
+{
+    obstaclesEnabled = enabled;
 }
 
-int Arena::getEntropy()
+bool Arena::getEntropy()
 {
-    return entropy;
+    return entropyEnabled;
 }
 
 int Arena::metersToPixels(double length)
@@ -192,8 +198,8 @@ void Arena::randomize()
     time_t t;
     srand(static_cast<unsigned>(time(&t)));
 
-    osv->setLeftPWM(0, entropy);
-    osv->setRightPWM(0,entropy);
+    osv->setLeftPWM(0, entropyEnabled);
+    osv->setRightPWM(0,entropyEnabled);
 
     static const double quadrantBounds[4][4] = {
         // Min x, Max x, Min y, Max y
@@ -285,8 +291,8 @@ void Arena::randomize()
 
 void Arena::reset()
 {
-    osv->setLeftPWM(0,0);
-    osv->setRightPWM(0,0);
+    osv->setLeftPWM(0,entropyEnabled);
+    osv->setRightPWM(0,entropyEnabled);
     osv->setLocation(startingLocation);
 }
 
@@ -343,18 +349,19 @@ double Arena::getDistance(int index)
     QLineF sensorTrace(sensorLocations[index].x, sensorLocations[index].y, endPoint.x, endPoint.y);
     double minimumDistance = 1.0;
     QPointF *tempPoint = new QPointF(0,0);
+    if (obstaclesEnabled) {
+        for(Obstacle obstacle:obstacles) {
+            // for each of the obstacles
+            QLineF right(obstacle.location.x + obstacle.width, obstacle.location.y, obstacle.location.x + obstacle.width, obstacle.location.y - obstacle.length);
+            QLineF bottom(obstacle.location.x, obstacle.location.y - obstacle.length, obstacle.location.x + obstacle.width, obstacle.location.y - obstacle.length);
+            QLineF left(obstacle.location.x, obstacle.location.y - obstacle.length, obstacle.location.x, obstacle.location.y);
+            QLineF top(obstacle.location.x, obstacle.location.y, obstacle.location.x + obstacle.width, obstacle.location.y);
+            QLineF obstacleSides [] = {right, bottom, left, top};
 
-    for(Obstacle obstacle:obstacles) {
-        // for each of the obstacles
-        QLineF right(obstacle.location.x + obstacle.width, obstacle.location.y, obstacle.location.x + obstacle.width, obstacle.location.y - obstacle.length);
-        QLineF bottom(obstacle.location.x, obstacle.location.y - obstacle.length, obstacle.location.x + obstacle.width, obstacle.location.y - obstacle.length);
-        QLineF left(obstacle.location.x, obstacle.location.y - obstacle.length, obstacle.location.x, obstacle.location.y);
-        QLineF top(obstacle.location.x, obstacle.location.y, obstacle.location.x + obstacle.width, obstacle.location.y);
-        QLineF obstacleSides [] = {right, bottom, left, top};
-
-        for(QLineF obstacleSide : obstacleSides) {
-            if(obstacleSide.intersect(sensorTrace, tempPoint) == QLineF::BoundedIntersection) {
-                        minimumDistance = MIN(minimumDistance,distance(sensorLocations[index], tempPoint));
+            for(QLineF obstacleSide : obstacleSides) {
+                if(obstacleSide.intersect(sensorTrace, tempPoint) == QLineF::BoundedIntersection) {
+                            minimumDistance = MIN(minimumDistance,distance(sensorLocations[index], tempPoint));
+                }
             }
         }
     }

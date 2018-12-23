@@ -109,7 +109,7 @@ void OSV::refreshLocation()
 
 }
 
-void OSV::setLeftPWM(int pwm, int entropy)
+void OSV::setLeftPWM(int pwm, bool entropy)
 {
     if (pwm == prevLeftPWM) {
         //prevent repeated calls from resetting pwm to avoid averaging of randomness
@@ -117,15 +117,16 @@ void OSV::setLeftPWM(int pwm, int entropy)
     }
     prevLeftPWM = pwm;
     time_t t;
+    double entropy_stddev = entropy ? 0.1 : 0.0;
     srand(static_cast<unsigned int>(time(&t)));
-    std::normal_distribution<double> entropy_dist (pwm, pwm * entropy / (255 * 5));
+    std::normal_distribution<double> entropy_dist (pwm, pwm * entropy_stddev);
     std::default_random_engine gen;
     gen.seed(static_cast<std::linear_congruential_engine<unsigned int, 16807, 0, 2147483647>::result_type>(rand()));
     leftPWM = static_cast<int>(entropy_dist(gen));
     leftPWM = MAX(-255,MIN(255, leftPWM));
 }
 
-void OSV::setRightPWM(int pwm, int entropy)
+void OSV::setRightPWM(int pwm, bool entropy)
 {
     if (pwm == prevRightPWM) {
         //prevent repeated calls from resetting pwm to avoid averaging of randomness
@@ -133,8 +134,9 @@ void OSV::setRightPWM(int pwm, int entropy)
     }
     prevRightPWM = pwm;
     time_t t;
+    double entropy_stddev = entropy ? 0.1 : 0.0;
     srand(static_cast<unsigned int>(time(&t)));
-    std::normal_distribution<double> entropy_dist (pwm,pwm * entropy / (255 * 5));
+    std::normal_distribution<double> entropy_dist (pwm,pwm * entropy_stddev);
     std::default_random_engine gen;
     gen.seed(static_cast<std::linear_congruential_engine<unsigned int, 16807, 0, 2147483647>::result_type>(rand()));
     rightPWM = static_cast<int>(entropy_dist(gen));

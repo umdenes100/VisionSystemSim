@@ -81,42 +81,34 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label">
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>28</height>
-      </size>
+    <widget class="QCheckBox" name="obstaclesEnabled">
+     <property name="enabled">
+      <bool>true</bool>
      </property>
      <property name="font">
       <font>
-       <pointsize>9</pointsize>
+       <pointsize>10</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
-      <string>Simulation Entropy:</string>
+      <string>Obstacles enabled</string>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
+     <property name="checked">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QSlider" name="horizontalSlider">
-     <property name="maximum">
-      <number>1</number>
+    <widget class="QCheckBox" name="entropyEnabled">
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
      </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="invertedAppearance">
-      <bool>false</bool>
-     </property>
-     <property name="tickPosition">
-      <enum>QSlider::TicksBothSides</enum>
-     </property>
-     <property name="tickInterval">
-      <number>1</number>
+     <property name="text">
+      <string>Entropy Enabled</string>
      </property>
     </widget>
    </item>

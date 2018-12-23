@@ -32,7 +32,7 @@ public:
     double getDistance(int index);
     Point destination;
     Point startingLocation;
-    int getEntropy();
+    bool getEntropy();
 
     struct Obstacle {
         Point location;
@@ -46,7 +46,8 @@ private slots:
     void refresh();
     void randomize();
     void reset();
-    void entropyChanged(int newEntropy);
+    void entropyChanged(bool enabled);
+    void obstaclesToggled(bool enabled);
 
 private:
     Ui::Arena *ui;
@@ -56,8 +57,9 @@ private:
     QTime timeElapsed;
     int arenaWidthPx, arenaHeightPx;
     int xOffsetPx, yOffsetPx;
-    int entropy;
+    bool entropyEnabled;
     inline double distance(Point a, QPointF *b);
+    bool obstaclesEnabled;
 };
 
 #endif // ARENA_H

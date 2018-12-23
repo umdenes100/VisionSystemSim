@@ -24,19 +24,16 @@ signals:
     void randomizeClicked();
     void resetClicked();
     void sliderMoved(int pos);
+    void obstaclesBoxChanged(bool enabled);
+    void entropyBoxChanged(bool enabled);
 
 private slots:
     void on_RandomizeButton_clicked();
-
     void on_OSVButton_clicked();
-
     void on_ResetButton_clicked();
-
     void on_documentationButton_clicked();
-
-    void on_horizontalSlider_valueChanged(int value);
-
-    //void on_CustomY_valueChanged(const QString &arg1);
+    void on_obstaclesEnabled_stateChanged(int arg1);
+    void on_entropyEnabled_stateChanged(int arg1);
 
 private:
     Ui::SettingsWidget *ui;
