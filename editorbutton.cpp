@@ -31,11 +31,11 @@ void EditorButton::paintEvent(QPaintEvent *e)
         paint.drawRect(0, 0, this->width() - 1, this->height() - 1);
         break;
     case 1:
-        paint.fillRect(0, 0, this->width() - 1, this->height() - 1, QColor(200, 200, 200));
+        paint.fillRect(0, 0, this->width() - 1, this->height() - 1, enableColor);
         paint.drawRect(0, 0, this->width() - 1, this->height() - 1);
         break;
     case 2:
-        paint.fillRect(0, 0, this->width() - 1, this->height() - 1, QColor(75, 75, 75));
+        paint.fillRect(0, 0, this->width() - 1, this->height() - 1, hoverColor);
         paint.drawRect(0, 0, this->width() - 1, this->height() - 1);
         paint.setPen(whitePen);
         paint.drawText(QPoint(width() / 2 - (metrics.width(QString::number(index)) / 2), height() / 2 + 8), QString::number(index));

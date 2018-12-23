@@ -1,5 +1,6 @@
 #include "communicationwidget.h"
 #include "ui_communicationwidget.h"
+#include <QThread>
 
 CommunicationWidget::CommunicationWidget(QWidget *parent) :
     QWidget(parent),
@@ -66,53 +67,44 @@ void CommunicationWidget::read()
 
 void CommunicationWidget::executeCommand()
 {
-    // TODO: everythign
+    if (arena->getEntropy() && (commandBuffer == "location" || commandBuffer == "destination")) {
+        if (rand() % FAIL_PERIOD == 0) {
+            return;
+        }
+        std::normal_distribution<double> entropy_dist (RESP_DELAY_MILLIS, RESP_TIME_MILLIS * ENTROPY_STDDEV);
+        std::default_random_engine gen;
+        gen.seed(static_cast<std::linear_congruential_engine<unsigned int, 16807, 0, 2147483647>::result_type>(rand()));
+        //need to put this on a separate thread so that it doesn't pause the whole simulator
+        QThread::msleep(static_cast<unsigned int>(entropy_dist(gen)));
+    }
 
     if(commandBuffer == "location") {
-        double orientation;
-        if(osv->location.theta > PI) {
-            orientation = osv->location.theta - 2 * PI;
-        } else {
-            orientation = osv->location.theta;
-        }
+        double orientation = osv->location.theta > PI ? osv->location.theta - 2 * PI : osv->location.theta;
 
         QString location = "";
         location += QString::number(osv->location.x) + ",";
         location += QString::number(osv->location.y) + ",";
         location += QString::number(orientation) + "\n";
         thisPort->write(location.toUtf8());
-        return;
-    }
-
-    if(commandBuffer == "destination") {
+    } else if(commandBuffer == "destination") {
         QString destination = "";
         destination += QString::number(osv->destination.x) + ",";
         destination += QString::number(osv->destination.y) + "\n";
         thisPort->write(destination.toUtf8());
-        return;
-    }
-
-    if(commandBuffer[0] == 'l') {
+    } else if(commandBuffer[0] == 'l') {
         // set left pwm
         commandBuffer.remove("l");
         osv->setLeftPWM(commandBuffer.toInt(), arena->getEntropy());
-        return;
-    }
-
-    if(commandBuffer[0] == 'r') {
+    } else if(commandBuffer[0] == 'r') {
         //set right pwm
         commandBuffer.remove("r");
         osv->setRightPWM(commandBuffer.toInt(), arena->getEntropy());
-        return;
-    }
-
-    if(commandBuffer.contains("distance")) {
+    }else if(commandBuffer.contains("distance")) {
         // read distance
         commandBuffer.remove("distance");
         int index = commandBuffer.toInt();
         QString send = QString::number(arena->getDistance(index)) + "\n";
         thisPort->write(send.toUtf8());
-        return;
     }
 }
 

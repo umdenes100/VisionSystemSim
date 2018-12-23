@@ -11,8 +11,12 @@
 #include <algorithm>
 
 #include "detail.h"
+
+#define DEFAULT_WIDTH 0.229
+#define DEFAULT_LENGTH 0.239
 #define TANK_SPEED 0.35
 #define ROTATIONS_PER_SECOND 0.16
+#define ENTROPY_STDDEV 0.06
 #define WOOD_WIDTH 120
 #define MARKER_WIDTH 100
 
@@ -45,6 +49,7 @@ public slots:
 
 private:
     int prevLeftPWM, prevRightPWM;
+    const QColor treadColor = QColor(80,80,80);
 };
 
 #endif // OSV_H

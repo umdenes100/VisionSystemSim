@@ -24,7 +24,7 @@ class Arena : public QWidget
     Q_OBJECT
 
 public:
-    explicit Arena(QWidget *parent = 0);
+    explicit Arena(QWidget *parent = nullptr);
     ~Arena();
     OSV* osv;
     QPoint metersToPixels(Point inMeters);
@@ -39,7 +39,6 @@ public:
         double length, width;
     };
 
-    Obstacle obstacles[3];
 
 private slots:
     void timerTick();
@@ -53,6 +52,8 @@ private:
     Ui::Arena *ui;
     void paintEvent(QPaintEvent *event);
     void updateDestination();
+    bool checkForCollisions();
+
     QTimer* refreshTimer;
     QTime timeElapsed;
     int arenaWidthPx, arenaHeightPx;
@@ -60,6 +61,11 @@ private:
     bool entropyEnabled;
     inline double distance(Point a, QPointF *b);
     bool obstaclesEnabled;
+    const QColor sandColor = QColor(250, 226, 190);
+    const QColor obstacleColor = QColor(150, 126, 90);
+    const QColor terrainColor = QColor(210, 186, 150);
+    Obstacle obstacles[3];
+
 };
 
 #endif // ARENA_H

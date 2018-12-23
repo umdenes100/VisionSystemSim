@@ -33,31 +33,43 @@ void Arena::refresh()
 {
     osv->refreshLocation();
 
+    if(checkForCollisions()) {
+        osv->location.x = osv->prevLocation.x;
+        osv->location.y = osv->prevLocation.y;
+        osv->location.theta = osv->prevLocation.theta;
+    }
 
+    update();
+}
+
+bool Arena::checkForCollisions()
+{
     // points a,b,c,d represent the four corners of the OSV
+    double cos_theta = cos(osv->location.theta);
+    double sin_theta = sin(osv->location.theta);
     Point midPoint;
-    midPoint.x = osv->location.x + osv->width / 2 * cos(osv->location.theta);
-    midPoint.y = osv->location.y + osv->width / 2 * sin(osv->location.theta);
+    midPoint.x = osv->location.x + osv->width / 2 * cos_theta;
+    midPoint.y = osv->location.y + osv->width / 2 * sin_theta;
 
     Point a;
-    a.x = midPoint.x - osv->length / 2 * sin(osv->location.theta);
-    a.y = midPoint.y + osv->length / 2 * cos(osv->location.theta);
+    a.x = midPoint.x - osv->length / 2 * sin_theta;
+    a.y = midPoint.y + osv->length / 2 * cos_theta;
 
     Point b;
-    b.x = midPoint.x + osv->length / 2 * sin(osv->location.theta);
-    b.y = midPoint.y - osv->length / 2 * cos(osv->location.theta);
+    b.x = midPoint.x + osv->length / 2 * sin_theta;
+    b.y = midPoint.y - osv->length / 2 * cos_theta;
 
     Point midPoint2;
-    midPoint2.x = osv->location.x - osv->width / 2 * cos(osv->location.theta);
-    midPoint2.y = osv->location.y - osv->width / 2 * sin(osv->location.theta);
+    midPoint2.x = osv->location.x - osv->width / 2 * cos_theta;
+    midPoint2.y = osv->location.y - osv->width / 2 * sin_theta;
 
     Point c;
-    c.x = midPoint2.x - osv->length / 2 * sin(osv->location.theta);
-    c.y = midPoint2.y + osv->length / 2 * cos(osv->location.theta);
+    c.x = midPoint2.x - osv->length / 2 * sin_theta;
+    c.y = midPoint2.y + osv->length / 2 * cos_theta;
 
     Point d;
-    d.x = midPoint2.x + osv->length / 2 * sin(osv->location.theta);
-    d.y = midPoint2.y - osv->length / 2 * cos(osv->location.theta);
+    d.x = midPoint2.x + osv->length / 2 * sin_theta;
+    d.y = midPoint2.y - osv->length / 2 * cos_theta;
 
     QLineF frontOSV(a.x, a.y, b.x, b.y);
     QLineF leftOSV(a.x, a.y, c.x, c.y);
@@ -65,7 +77,6 @@ void Arena::refresh()
     QLineF rightOSV(b.x, b.y, d.x, d.y);
     QLineF osvSides [] = {frontOSV, leftOSV, backOSV, rightOSV};
 
-    bool collision = false;
     if (obstaclesEnabled) {
         for(Obstacle obstacle:obstacles) {
             // for each of the obstacles
@@ -78,8 +89,7 @@ void Arena::refresh()
             for(QLineF obstacleSide:obstacleSides) {
                 for(QLineF osvSide : osvSides) {
                     if(obstacleSide.intersect(osvSide, nullptr) == QLineF::BoundedIntersection) {
-                        collision = true;
-                        break;
+                        return true;
                     }
                 }
 
@@ -98,18 +108,11 @@ void Arena::refresh()
     for(QLineF wall: walls) {
         for(QLineF osvSide : osvSides) {
             if(wall.intersect(osvSide, nullptr) == QLineF::BoundedIntersection) {
-                collision = true;
+                return true;
             }
         }
     }
-
-    if(collision) {
-        osv->location.x = osv->prevLocation.x;
-        osv->location.y = osv->prevLocation.y;
-        osv->location.theta = osv->prevLocation.theta;
-    }
-
-    update();
+    return false;
 }
 
 void Arena::paintEvent(QPaintEvent *event)//why does this method need a parameter?
@@ -129,7 +132,7 @@ void Arena::paintEvent(QPaintEvent *event)//why does this method need a paramete
 
         xOffsetPx = 30;
         yOffsetPx = height() / 2 - arenaHeightPx / 2;
-        paint.fillRect(xOffsetPx, yOffsetPx, arenaWidthPx, arenaHeightPx, QColor(250, 226, 190));
+        paint.fillRect(xOffsetPx, yOffsetPx, arenaWidthPx, arenaHeightPx, sandColor);
         paint.drawRect(xOffsetPx, yOffsetPx, arenaWidthPx, arenaHeightPx);
     } else {
         arenaHeightPx = height() - 60;
@@ -137,7 +140,7 @@ void Arena::paintEvent(QPaintEvent *event)//why does this method need a paramete
 
         yOffsetPx = 30;
         xOffsetPx = width() / 2 - arenaWidthPx / 2;
-        paint.fillRect(xOffsetPx, yOffsetPx, arenaWidthPx, arenaHeightPx, QColor(250, 226, 190));
+        paint.fillRect(xOffsetPx, yOffsetPx, arenaWidthPx, arenaHeightPx, sandColor);
         paint.drawRect(xOffsetPx, yOffsetPx, arenaWidthPx, arenaHeightPx);
     }
 
@@ -145,10 +148,13 @@ void Arena::paintEvent(QPaintEvent *event)//why does this method need a paramete
 
     QImage osvImage = osv->draw();
 
+    //draw terrain
+    paint.fillRect(metersToPixels(Point{0.65,0,0}).x(), metersToPixels(Point{0,1.995,0}).y(), metersToPixels(0.6), metersToPixels(1.992), terrainColor);
+
     paint.drawImage(metersToPixels(osv->location) - osvImage.rect().center(), osvImage);
     if (obstaclesEnabled){
         for(int i = 0; i < 3; i++) {
-            paint.fillRect(metersToPixels(obstacles[i].location).x(), metersToPixels(obstacles[i].location).y(), metersToPixels(obstacles[i].width), metersToPixels(obstacles[i].length), QColor(170, 146, 110));
+            paint.fillRect(metersToPixels(obstacles[i].location).x(), metersToPixels(obstacles[i].location).y(), metersToPixels(obstacles[i].width), metersToPixels(obstacles[i].length), obstacleColor);
         }
     }
 
@@ -213,7 +219,6 @@ void Arena::randomize()
     startingLocation.x = 0.35;
     startingLocation.y = 0.4 + (rand() % 5) * 0.3;
     startingLocation.theta = (rand() % 4) * PI / 2 - PI;
-    osv->setLocation(startingLocation);
 
     // Generate random positions and orientations for obstacles
     int largeObstacleQuadrant = rand() % 3;
@@ -287,6 +292,7 @@ void Arena::randomize()
 
     osv->startingLocation = startingLocation;
     osv->destination = destination;
+    osv->setLocation(startingLocation);
 }
 
 void Arena::reset()
@@ -304,29 +310,31 @@ double Arena::getDistance(int index)
     }
 
     // we have to get the slope of the front side of the osv first
+    double cos_theta = cos(osv->location.theta);
+    double sin_theta = sin(osv->location.theta);
     Point midPointFront;
-    midPointFront.x = osv->location.x + osv->width / 2 * cos(osv->location.theta);
-    midPointFront.y = osv->location.y + osv->width / 2 * sin(osv->location.theta);
+    midPointFront.x = osv->location.x + osv->width / 2 * cos_theta;
+    midPointFront.y = osv->location.y + osv->width / 2 * sin_theta;
 
     Point a;
-    a.x = midPointFront.x - osv->length / 2 * sin(osv->location.theta);
-    a.y = midPointFront.y + osv->length / 2 * cos(osv->location.theta);
+    a.x = midPointFront.x - osv->length / 2 * sin_theta;
+    a.y = midPointFront.y + osv->length / 2 * cos_theta;
 
     Point b;
-    b.x = midPointFront.x + osv->length / 2 * sin(osv->location.theta);
-    b.y = midPointFront.y - osv->length / 2 * cos(osv->location.theta);
+    b.x = midPointFront.x + osv->length / 2 * sin_theta;
+    b.y = midPointFront.y - osv->length / 2 * cos_theta;
 
     Point midPointBack;
-    midPointBack.x = osv->location.x - osv->width / 2 * cos(osv->location.theta);
-    midPointBack.y = osv->location.y - osv->width / 2 * sin(osv->location.theta);
+    midPointBack.x = osv->location.x - osv->width / 2 * cos_theta;
+    midPointBack.y = osv->location.y - osv->width / 2 * sin_theta;
 
     Point c;
-    c.x = midPointBack.x - osv->length / 2 * sin(osv->location.theta);
-    c.y = midPointBack.y + osv->length / 2 * cos(osv->location.theta);
+    c.x = midPointBack.x - osv->length / 2 * sin_theta;
+    c.y = midPointBack.y + osv->length / 2 * cos_theta;
 
     Point d;
-    d.x = midPointBack.x + osv->length / 2 * sin(osv->location.theta);
-    d.y = midPointBack.y - osv->length / 2 * cos(osv->location.theta);
+    d.x = midPointBack.x + osv->length / 2 * sin_theta;
+    d.y = midPointBack.y - osv->length / 2 * cos_theta;
 
     Point midPointLeft;
     midPointLeft.x = (a.x + c.x) / 2;
@@ -341,7 +349,7 @@ double Arena::getDistance(int index)
     int sideIndex = index / 3;
     double orientation = osv->location.theta + sideIndex * PI / 2;
 
-    int range = 1;
+    double range = 1.0;
     Point endPoint;
     endPoint.x = sensorLocations[index].x + range * cos(orientation);
     endPoint.y = sensorLocations[index].y + range * sin(orientation);

@@ -5,6 +5,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    srand(static_cast<unsigned int>(time(nullptr)));
     ui->setupUi(this);
     ui->communicationwidget->osv = ui->arena->osv;
     ui->communicationwidget->arena = ui->arena;

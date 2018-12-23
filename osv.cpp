@@ -9,48 +9,48 @@ OSV::OSV(QObject *parent) : QObject(parent)
     destination.x = 0.0;
     destination.y = 0.0;
 
-    width = 0.229;
-    length = 0.239;
+    width = DEFAULT_WIDTH;
+    length = DEFAULT_LENGTH;
     location.theta = 0;
     leftPWM = 0;
     rightPWM = 0;
     prevLeftPWM = 0;
     prevRightPWM = 0;
 
-    const int widthPx = 229;
-    const int heightPx = 239;
+    int widthPx = 229;
+    int lengthPx = 239;
 
     QPen pen(Qt::green);
     pen.setWidth(5);
 
-    QImage image(widthPx, heightPx, QImage::Format_ARGB32);
+    QImage image(widthPx, lengthPx, QImage::Format_ARGB32);
     image.fill(qRgba(0, 0, 0, 0));
     QPainter paint;
     paint.begin(&image);
     paint.setPen(pen);
 
     //draw treads
-    paint.fillRect(0, 0, widthPx, 28, QColor(80,80,80));
-    paint.fillRect(0, heightPx - 28, widthPx, 28, QColor(80,80,80));
+    int treadWidth = 28;
+    paint.fillRect(0, 0, widthPx, treadWidth, treadColor);
+    paint.fillRect(0, lengthPx - treadWidth, widthPx, treadWidth, treadColor);
 
     //draw body
-    paint.fillRect(20, 50, widthPx - 40, heightPx - 100, Qt::black);
+    paint.fillRect(20, 50, widthPx - 40, lengthPx - 100, Qt::black);
 
     //draw aruco marker
     const int marker_top_x = widthPx / 2 - MARKER_WIDTH / 2;
-    const int marker_top_y = heightPx / 2 - MARKER_WIDTH / 2;
-    paint.fillRect(widthPx / 2 - WOOD_WIDTH / 2, heightPx / 2 - WOOD_WIDTH / 2, WOOD_WIDTH, WOOD_WIDTH, Qt::white);
+    const int marker_top_y = lengthPx / 2 - MARKER_WIDTH / 2;
+    paint.fillRect(widthPx / 2 - WOOD_WIDTH / 2, lengthPx / 2 - WOOD_WIDTH / 2, WOOD_WIDTH, WOOD_WIDTH, Qt::white);
     paint.fillRect(marker_top_x, marker_top_y, MARKER_WIDTH, MARKER_WIDTH, Qt::black);
 
-    //marker #121
-    int square_width = MARKER_WIDTH / 7;
-    paint.fillRect(marker_top_x + square_width, marker_top_y + square_width, square_width, 2*square_width, Qt::white);
-    paint.fillRect(marker_top_x + square_width, marker_top_y + 5*square_width, square_width, square_width, Qt::white);
-    paint.fillRect(marker_top_x + 2*square_width, marker_top_y + 3*square_width, square_width, 2*square_width, Qt::white);
-    paint.fillRect(marker_top_x + 3*square_width, marker_top_y + 2*square_width, 2*square_width, 2*square_width, Qt::white);
-    paint.fillRect(marker_top_x + 3*square_width, marker_top_y + 5*square_width, 3*square_width, square_width, Qt::white);
-    paint.fillRect(marker_top_x + 5*square_width, marker_top_y + 4*square_width, square_width, square_width, Qt::white);
-    paint.fillRect(marker_top_x + 5*square_width, marker_top_y + 2*square_width, square_width, square_width, Qt::white);
+    //marker #4
+    int square_width = MARKER_WIDTH / 6;
+    paint.fillRect(marker_top_x + 2*square_width, marker_top_y + square_width, square_width, 2*square_width, Qt::white);
+    paint.fillRect(marker_top_x + 4*square_width, marker_top_y + square_width, square_width, square_width, Qt::white);
+    paint.fillRect(marker_top_x + square_width, marker_top_y + 3*square_width, square_width, 2*square_width, Qt::white);
+    paint.fillRect(marker_top_x + square_width, marker_top_y + 4*square_width, 3*square_width, square_width, Qt::white);
+    paint.fillRect(marker_top_x + 4*square_width, marker_top_y + 3*square_width, square_width, square_width, Qt::white);
+
 
 
     //draw arrow
@@ -68,9 +68,9 @@ OSV::OSV(QObject *parent) : QObject(parent)
 QImage OSV::draw()
 {
     int widthPx = static_cast<int>(width * ppm);
-    int heightPx = static_cast<int>(length * ppm);
+    int lengthPx = static_cast<int>(length * ppm);
 
-    QImage scaled = osvImage.scaled(widthPx, heightPx);
+    QImage scaled = osvImage.scaled(widthPx, lengthPx);
     QPoint center = scaled.rect().center();
     QMatrix matrix;
     matrix.translate(center.x(), center.y());
@@ -103,7 +103,6 @@ void OSV::refreshLocation()
     location.x = location.x + speed * cos(location.theta);
     location.y = location.y + speed * sin(location.theta);
 
-
     location.theta += 2 * PI * ROTATIONS_PER_SECOND / 50 * (rightPWM - leftPWM) / 255.0;
 
 
@@ -116,12 +115,10 @@ void OSV::setLeftPWM(int pwm, bool entropy)
         return;
     }
     prevLeftPWM = pwm;
-    time_t t;
-    double entropy_stddev = entropy ? 0.1 : 0.0;
-    srand(static_cast<unsigned int>(time(&t)));
+    double entropy_stddev = entropy ? ENTROPY_STDDEV : 0.0;
     std::normal_distribution<double> entropy_dist (pwm, pwm * entropy_stddev);
     std::default_random_engine gen;
-    gen.seed(static_cast<std::linear_congruential_engine<unsigned int, 16807, 0, 2147483647>::result_type>(rand()));
+    gen.seed(static_cast<std::linear_congruential_engine<unsigned int, 16807, 0, 2147483647>::result_type>(rand() + 7));
     leftPWM = static_cast<int>(entropy_dist(gen));
     leftPWM = MAX(-255,MIN(255, leftPWM));
 }
@@ -133,9 +130,7 @@ void OSV::setRightPWM(int pwm, bool entropy)
         return;
     }
     prevRightPWM = pwm;
-    time_t t;
     double entropy_stddev = entropy ? 0.1 : 0.0;
-    srand(static_cast<unsigned int>(time(&t)));
     std::normal_distribution<double> entropy_dist (pwm,pwm * entropy_stddev);
     std::default_random_engine gen;
     gen.seed(static_cast<std::linear_congruential_engine<unsigned int, 16807, 0, 2147483647>::result_type>(rand()));
