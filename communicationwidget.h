@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QScrollBar>
 
+#include "response.h"
 #include "osv.h"
 #include "arena.h"
 
@@ -28,6 +29,9 @@ public:
     ~CommunicationWidget();
     OSV* osv;
     Arena* arena;
+
+public slots:
+    void responseReady(QString msg);
 
 private slots:
     void checkPorts();

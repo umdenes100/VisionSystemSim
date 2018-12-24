@@ -34,7 +34,9 @@ SOURCES += \
     osv.cpp \
     osveditorwindow.cpp \
     editorbutton.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    controller.cpp \
+    response.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -44,7 +46,9 @@ HEADERS += \
     osv.h \
     detail.h \
     osveditorwindow.h \
-    editorbutton.h
+    editorbutton.h \
+    controller.h \
+    response.h
 
 FORMS += \
         mainwindow.ui \
