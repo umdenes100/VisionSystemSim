@@ -115,7 +115,7 @@ bool Arena::checkForCollisions()
     return false;
 }
 
-void Arena::paintEvent(QPaintEvent *event)//why does this method need a parameter?
+void Arena::paintEvent(QPaintEvent *event)
 {
     QPainter paint(this);
     QPen pen(Qt::black);

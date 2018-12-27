@@ -6,14 +6,19 @@
 #include <QThread>
 #include <QtDebug>
 #include <QTextCodec>
+#include <random>
+#include "detail.h"
+
+#define RESP_TIME_MILLIS 250                        //average response time of the VS
+#define RESP_DELAY_MILLIS (RESP_TIME_MILLIS - 75)   //avg delay used (offset by 50sms because of other delays)
 
 class Response : public QThread
 {
     Q_OBJECT
 
 public:
-    explicit Response(QThread *parent = nullptr, QString data = "", unsigned int delay=0);
-    ~Response();
+    explicit Response(QThread *parent = nullptr, QString data = "");
+    ~Response() override;
     void run() override;
 
 signals:
@@ -22,7 +27,6 @@ public slots:
 
 private:
     QString msg;
-    unsigned int waitTime;
 };
 
 #endif // RESPONSE_H

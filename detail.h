@@ -6,6 +6,8 @@
 #define MAX(x,y) (((x) > (y)) ? (x) : (y))
 #define MIN(x,y) (((x) < (y)) ? (x) : (y))
 
+#define ENTROPY_STDDEV 0.06
+
 struct Point {
     double x, y, theta;
 };

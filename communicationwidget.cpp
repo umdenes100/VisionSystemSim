@@ -1,6 +1,10 @@
 #include "communicationwidget.h"
 #include "ui_communicationwidget.h"
 #include <QThread>
+//#include <QSerialPort>
+//#include <QSerialPortInfo>
+#include <QtSerialPort>
+#include <QtSerialPort/qserialportinfo.h>
 
 CommunicationWidget::CommunicationWidget(QWidget *parent) :
     QWidget(parent),
@@ -10,7 +14,7 @@ CommunicationWidget::CommunicationWidget(QWidget *parent) :
     refreshTimer = new QTimer();
     connect(refreshTimer, SIGNAL(timeout()), this, SLOT(checkPorts()));
     connect(ui->comboBox, SIGNAL(activated(QString)), this, SLOT(setPort(QString)));
-    refreshTimer->start(500);
+    refreshTimer->start(350);
     thisPort = nullptr;
 }
 
@@ -31,15 +35,19 @@ void CommunicationWidget::setPort(QString name)
     thisPort->setStopBits(QSerialPort::OneStop);
     thisPort->setFlowControl(QSerialPort::NoFlowControl);
 
-    while(!thisPort->isOpen()) {
-        thisPort->open(QSerialPort::ReadWrite);
+    if (thisPort->open(QSerialPort::ReadWrite)) {
+        connect(thisPort, SIGNAL(readyRead()), this, SLOT(read()));
+        ui->comboBox->setCurrentIndex(ui->comboBox->findText(name));
+    } else {
+        thisPort = nullptr;
     }
-    connect(thisPort, SIGNAL(readyRead()), this, SLOT(read()));
-    ui->comboBox->setCurrentIndex(ui->comboBox->findText(name));
 }
 
 void CommunicationWidget::read()
 {
+    if (thisPort == nullptr) {
+        return;
+    }
     while(thisPort->bytesAvailable()) {
         char c;
         thisPort->getChar(&c);
@@ -67,6 +75,9 @@ void CommunicationWidget::read()
 
 void CommunicationWidget::executeCommand()
 {
+    if (thisPort == nullptr) {
+        return;
+    }
     QString msg = "";
     if(commandBuffer == "location") {
         double orientation = osv->location.theta > PI ? osv->location.theta - 2 * PI : osv->location.theta;
@@ -107,7 +118,7 @@ void CommunicationWidget::executeCommand()
         std::normal_distribution<double> entropy_dist (RESP_DELAY_MILLIS, RESP_TIME_MILLIS * ENTROPY_STDDEV);
         std::default_random_engine gen;
         gen.seed(static_cast<std::linear_congruential_engine<unsigned int, 16807, 0, 2147483647>::result_type>(rand()));
-        Response *response = new Response(nullptr, msg, static_cast<unsigned int>(entropy_dist(gen)));
+        Response *response = new Response(nullptr, msg);
         connect(response, &Response::finished, response, &QObject::deleteLater);
         connect(response, SIGNAL(delayOver(QString)), this, SLOT(responseReady(QString)));
         response->start();
@@ -119,16 +130,26 @@ void CommunicationWidget::executeCommand()
 
 void CommunicationWidget::responseReady(QString msg)
 {
-    thisPort->write(msg.toUtf8());
+    if (thisPort != nullptr) {
+        thisPort->write(msg.toUtf8());
+    }
 }
 
 void CommunicationWidget::checkPorts()
 {
     QList<QSerialPortInfo> ports = QSerialPortInfo::availablePorts();
-    QString currName = ui->comboBox->currentText();
+    QString currName = thisPort == nullptr ? QString() : thisPort->portName();
     ui->comboBox->clear();
     foreach(QSerialPortInfo port, ports) {
         ui->comboBox->addItem(port.portName());
     }
-    ui->comboBox->setCurrentIndex(ui->comboBox->findText(currName));
+
+    if (thisPort == nullptr || thisPort->error() != QSerialPort::NoError) {
+        //if no port has been selected, or the current port selection has been disconnected, then the combo box is blank
+        ui->comboBox->setCurrentIndex(-1);
+    } else {
+        //if there is a valid port, then display it in the combo box
+        ui->comboBox->setCurrentIndex(ui->comboBox->findText(currName));
+    }
+
 }

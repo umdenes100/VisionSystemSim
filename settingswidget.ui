@@ -108,7 +108,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Entropy Enabled</string>
+      <string>Entropy enabled</string>
      </property>
     </widget>
    </item>
