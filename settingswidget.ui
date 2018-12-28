@@ -32,6 +32,12 @@
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>20</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="QPushButton" name="documentationButton">
      <property name="font">
@@ -93,7 +99,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Obstacles enabled</string>
+      <string>Obstacles</string>
      </property>
      <property name="checked">
       <bool>true</bool>

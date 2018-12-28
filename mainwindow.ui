@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1300</width>
-    <height>800</height>
+    <height>700</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -39,7 +39,7 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="spacing">
-       <number>0</number>
+       <number>20</number>
       </property>
       <item>
        <widget class="SettingsWidget" name="settingswidget" native="true">
@@ -52,7 +52,7 @@
         <property name="minimumSize">
          <size>
           <width>300</width>
-          <height>200</height>
+          <height>250</height>
          </size>
         </property>
         <property name="maximumSize">

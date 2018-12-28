@@ -76,7 +76,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Messages Recieved:</string>
+      <string>Messages Received:</string>
      </property>
     </widget>
    </item>
