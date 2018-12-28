@@ -9,6 +9,8 @@
 #include <QLineF>
 #include <QPointF>
 #include <math.h>
+#include <QHelpEvent>
+#include <QToolTip>
 
 #include "osv.h"
 #include "detail.h"
@@ -52,15 +54,16 @@ private:
     Ui::Arena *ui;
     void paintEvent(QPaintEvent *event);
     void updateDestination();
+    bool event(QEvent* event);
     bool checkForCollisions();
 
     QTimer* refreshTimer;
     QTime timeElapsed;
     int arenaWidthPx, arenaHeightPx;
     int xOffsetPx, yOffsetPx;
-    bool entropyEnabled;
+    bool entropyEnabled = false;
+    bool obstaclesEnabled = true;
     inline double distance(Point a, QPointF *b);
-    bool obstaclesEnabled;
     const QColor sandColor = QColor(250, 226, 190);
     const QColor obstacleColor = QColor(150, 126, 90);
     const QColor terrainColor = QColor(210, 186, 150);

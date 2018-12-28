@@ -39,6 +39,12 @@
        <pointsize>9</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Select the port that the Arduino is connected on</string>
+     </property>
+     <property name="toolTipDuration">
+      <number>2000</number>
+     </property>
      <property name="text">
       <string>Select Port:</string>
      </property>
@@ -50,6 +56,12 @@
       <font>
        <pointsize>9</pointsize>
       </font>
+     </property>
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="toolTipDuration">
+      <number>-1</number>
      </property>
      <property name="editable">
       <bool>false</bool>
@@ -75,6 +87,12 @@
        <pointsize>9</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Messages printed using 'enes.print()' and 'enes.println()' will show up here</string>
+     </property>
+     <property name="toolTipDuration">
+      <number>2000</number>
+     </property>
      <property name="text">
       <string>Messages Received:</string>
      </property>
@@ -86,6 +104,12 @@
       <font>
        <pointsize>9</pointsize>
       </font>
+     </property>
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="toolTipDuration">
+      <number>-1</number>
      </property>
     </widget>
    </item>

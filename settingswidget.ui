@@ -45,6 +45,12 @@
        <pointsize>9</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>View documentation for the simulator</string>
+     </property>
+     <property name="toolTipDuration">
+      <number>2000</number>
+     </property>
      <property name="text">
       <string>Documentation</string>
      </property>
@@ -56,6 +62,12 @@
       <font>
        <pointsize>9</pointsize>
       </font>
+     </property>
+     <property name="toolTip">
+      <string>Reset OSV location and speed</string>
+     </property>
+     <property name="toolTipDuration">
+      <number>2000</number>
      </property>
      <property name="text">
       <string>Reset</string>
@@ -69,6 +81,12 @@
        <pointsize>9</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Reset OSV location and randomize the obstacles and destination</string>
+     </property>
+     <property name="toolTipDuration">
+      <number>2000</number>
+     </property>
      <property name="text">
       <string>Randomize</string>
      </property>
@@ -80,6 +98,12 @@
       <font>
        <pointsize>9</pointsize>
       </font>
+     </property>
+     <property name="toolTip">
+      <string>Edit OSV distance sensors</string>
+     </property>
+     <property name="toolTipDuration">
+      <number>2000</number>
      </property>
      <property name="text">
       <string>Edit OSV</string>
@@ -98,6 +122,12 @@
        <bold>false</bold>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Turn obstacles on or off</string>
+     </property>
+     <property name="toolTipDuration">
+      <number>2000</number>
+     </property>
      <property name="text">
       <string>Obstacles</string>
      </property>
@@ -112,6 +142,12 @@
       <font>
        <pointsize>10</pointsize>
       </font>
+     </property>
+     <property name="toolTip">
+      <string>Enable or disable entropy (See documentation for details)</string>
+     </property>
+     <property name="toolTipDuration">
+      <number>2000</number>
      </property>
      <property name="text">
       <string>Entropy enabled</string>

@@ -5,6 +5,7 @@ Arena::Arena(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Arena)
 {
+    setMouseTracking(true);
     timeElapsed = QTime::currentTime();
     osv = new OSV();
     randomize();
@@ -12,8 +13,6 @@ Arena::Arena(QWidget *parent) :
     refreshTimer = new QTimer();
     connect(refreshTimer, SIGNAL(timeout()), this, SLOT(timerTick()));
     refreshTimer->start(3);
-    entropyEnabled = false;
-    obstaclesEnabled = true;
 }
 
 Arena::~Arena()
@@ -113,6 +112,43 @@ bool Arena::checkForCollisions()
         }
     }
     return false;
+}
+
+bool Arena::event(QEvent* event)
+{
+    if (event->type() == QEvent::ToolTip) {
+        int areaWidth = 80;
+        int destDiameterPx = metersToPixels(TARGET_DIAMETER);
+
+        QHelpEvent* helpEvent = static_cast<QHelpEvent*>(event);
+        QRect area = QRect(helpEvent->globalX() - areaWidth, helpEvent->globalY() - areaWidth, areaWidth, areaWidth);
+        QRect terrain = QRect(metersToPixels(Point{0.65,0,0}).x(), metersToPixels(Point{0,1.995,0}).y(), metersToPixels(0.6), metersToPixels(1.992));
+        QRect dest = QRect(metersToPixels(destination).x() - (destDiameterPx / 2), metersToPixels(destination).y() - (destDiameterPx / 2), destDiameterPx, destDiameterPx);
+
+        if (terrain.contains(helpEvent->pos())) {
+            QToolTip::showText(helpEvent->globalPos(), "rocky terrain", this, area, 2000);
+
+        } else if (dest.contains(helpEvent->pos())){
+            QString destinationTip = QString("destination: (") + QString::number(destination.x) + QString(",") + QString::number(destination.y) + QString(")") ;
+            QToolTip::showText(helpEvent->globalPos(), destinationTip, this, area, 2000);
+
+        } else {
+            if (obstaclesEnabled) {
+                QRect obstacle0 = QRect(metersToPixels(obstacles[0].location), QSize(metersToPixels(obstacles[0].width), metersToPixels(obstacles[0].length)));
+                QRect obstacle1 = QRect(metersToPixels(obstacles[1].location), QSize(metersToPixels(obstacles[1].width), metersToPixels(obstacles[1].length)));
+                QRect obstacle2 = QRect(metersToPixels(obstacles[2].location), QSize(metersToPixels(obstacles[2].width), metersToPixels(obstacles[2].length)));
+                QRect obstacleRects [] = {obstacle0, obstacle1, obstacle2};
+
+                for (QRect rect : obstacleRects) {
+                    if (rect.contains(helpEvent->pos())) {
+                        QToolTip::showText(helpEvent->globalPos(), "obstacle", this, area, 2000);
+                    }
+                }
+            }
+        }
+        return true;
+    }
+    return QWidget::event(event);
 }
 
 void Arena::paintEvent(QPaintEvent *event)

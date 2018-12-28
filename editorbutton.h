@@ -16,7 +16,7 @@ class EditorButton : public QWidget
     Q_OBJECT
 
 public:
-    explicit EditorButton(QWidget *parent = 0);
+    explicit EditorButton(QWidget *parent = nullptr);
     void setIndex(int index);
     void setState(int state);
     ~EditorButton();
@@ -32,8 +32,8 @@ private:
     void mousePressEvent(QMouseEvent *e);
     int buttonState;
     int index;
-    const QColor enableColor = QColor(170, 146, 110);
-    const QColor hoverColor = QColor(75, 75, 75);
+    const QColor hoverColor = QColor(125, 125, 125);
+    const QColor enableColor = QColor(75, 75, 75);
 };
 
 #endif // EDITORBUTTON_H
