@@ -27,11 +27,8 @@ class OSV : public QObject
 public:
     explicit OSV(QObject *parent = nullptr);
     void refreshLocation();
-    Point location;
-    Point prevLocation;
+    Point location, prevLocation, startingLocation, destination;
     bool sensors[12];
-    Point startingLocation;
-    Point destination;
     double length, width;
     void setRightPWM(int pwm, bool entropy);
     void setLeftPWM(int pwm, bool entropy);

@@ -32,8 +32,7 @@ public:
     QPoint metersToPixels(Point inMeters);
     int metersToPixels(double length);
     double getDistance(int index);
-    Point destination;
-    Point startingLocation;
+    Point destination, startingLocation;
     bool getEntropy();
 
     struct Obstacle {
