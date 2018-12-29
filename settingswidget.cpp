@@ -32,7 +32,7 @@ void SettingsWidget::on_ResetButton_clicked()
 
 void SettingsWidget::on_documentationButton_clicked()
 {
-    QDesktopServices::openUrl(QUrl("https://github.com/umdenes100/VisionSystemSim/blob/master/README.md"));
+    QDesktopServices::openUrl(QUrl("https://github.com/umdenes100/VisionSystemSimulatorInstallers/blob/master/README.md"));
 }
 
 void SettingsWidget::on_obstaclesEnabled_stateChanged(int enabled)
