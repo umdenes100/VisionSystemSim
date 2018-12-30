@@ -237,9 +237,6 @@ void Arena::updateDestination()
 
 void Arena::randomize()
 {
-    time_t t;
-    srand(static_cast<unsigned>(time(&t)));
-
     osv->setLeftPWM(0, entropyEnabled);
     osv->setRightPWM(0,entropyEnabled);
 

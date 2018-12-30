@@ -25,10 +25,13 @@ CommunicationWidget::~CommunicationWidget()
 
 void CommunicationWidget::setPort(QString name)
 {
+    QString portName = name.split("(")[0];
+    portName = portName.left(portName.length() - 1);
     if (thisPort != nullptr) {
         thisPort->close();
     }
-    thisPort = new QSerialPort(name, this);
+
+    thisPort = new QSerialPort(portName, this);
     thisPort->setBaudRate(QSerialPort::Baud9600);
     thisPort->setParity(QSerialPort::NoParity);
     thisPort->setDataBits(QSerialPort::Data8);
@@ -139,9 +142,10 @@ void CommunicationWidget::checkPorts()
 {
     QList<QSerialPortInfo> ports = QSerialPortInfo::availablePorts();
     QString currName = thisPort == nullptr ? QString() : thisPort->portName();
+    currName = ui->comboBox->currentText();
     ui->comboBox->clear();
     foreach(QSerialPortInfo port, ports) {
-        ui->comboBox->addItem(port.portName());
+        ui->comboBox->addItem(port.portName() + " (" + port.description() + ")");
     }
 
     if (thisPort == nullptr || thisPort->error() != QSerialPort::NoError) {

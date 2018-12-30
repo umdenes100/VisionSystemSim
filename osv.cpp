@@ -1,4 +1,3 @@
-#include <math.h>
 #include "osv.h"
 
 OSV::OSV(QObject *parent) : QObject(parent)
@@ -63,6 +62,7 @@ OSV::OSV(QObject *parent) : QObject(parent)
     for(int i = 0; i < 12; i++) {
         sensors[i] = false;
     }
+    rand_eng.seed(gen.generate());
 }
 
 QImage OSV::draw()
@@ -117,8 +117,6 @@ void OSV::setLeftPWM(int pwm, bool entropy)
     prevLeftPWM = pwm;
     double entropy_stddev = entropy ? ENTROPY_STDDEV : 0.0;
     std::normal_distribution<double> entropy_dist (pwm, pwm * entropy_stddev);
-    std::default_random_engine gen;
-    gen.seed(static_cast<std::linear_congruential_engine<unsigned int, 16807, 0, 2147483647>::result_type>(rand() + 7));
     leftPWM = static_cast<int>(entropy_dist(gen));
     leftPWM = MAX(-255,MIN(255, leftPWM));
 }
@@ -132,8 +130,6 @@ void OSV::setRightPWM(int pwm, bool entropy)
     prevRightPWM = pwm;
     double entropy_stddev = entropy ? 0.1 : 0.0;
     std::normal_distribution<double> entropy_dist (pwm,pwm * entropy_stddev);
-    std::default_random_engine gen;
-    gen.seed(static_cast<std::linear_congruential_engine<unsigned int, 16807, 0, 2147483647>::result_type>(rand()));
     rightPWM = static_cast<int>(entropy_dist(gen));
     rightPWM = MAX(-255, MIN(255,rightPWM));
 }

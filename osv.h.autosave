@@ -19,8 +19,6 @@
 #define WOOD_WIDTH 120
 #define MARKER_WIDTH 100
 
-
-
 class OSV : public QObject
 {
     Q_OBJECT
