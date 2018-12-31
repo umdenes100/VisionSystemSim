@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QDesktopServices>
 #include <QUrl>
+#include <QSettings>
 #include "osveditorwindow.h"
 #include "osv.h"
 
@@ -27,6 +28,9 @@ signals:
     void obstaclesBoxChanged(bool enabled);
     void entropyBoxChanged(bool enabled);
 
+public slots:
+    void writeSettings();
+
 private slots:
     void on_RandomizeButton_clicked();
     void on_OSVButton_clicked();
@@ -37,6 +41,9 @@ private slots:
 
 private:
     Ui::SettingsWidget *ui;
+    void readSettings();
+    bool entropyEnabled = false;
+    bool obstaclesEnabled = true;
 };
 
 #endif // SETTINGSWIDGET_H
