@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QDesktopWidget>
+#include <QStyle>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -7,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     srand(static_cast<unsigned int>(time(nullptr)));
     ui->setupUi(this);
+    centerAndResize();
     ui->communicationwidget->osv = ui->arena->osv;
     ui->communicationwidget->arena = ui->arena;
     ui->settingswidget->osv = ui->arena->osv;
@@ -19,5 +22,13 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::centerAndResize()
+{
+    QSize availableSize = qApp->desktop()->availableGeometry().size();
+    QSize newSize(availableSize.width(), availableSize.height());
+
+    setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, newSize, qApp->desktop()->availableGeometry()));
 }
 
