@@ -25,8 +25,8 @@ CommunicationWidget::~CommunicationWidget()
 
 void CommunicationWidget::setPort(QString name)
 {
-    QString portName = name.split("(")[0];
-    portName = portName.left(portName.length() - 1);
+    QString portName = name.split(" ")[0];
+
     if (thisPort != nullptr) {
         thisPort->close();
     }
@@ -156,4 +156,13 @@ void CommunicationWidget::checkPorts()
         ui->comboBox->setCurrentIndex(ui->comboBox->findText(currName));
     }
 
+}
+
+void CommunicationWidget::on_clearPortButton_clicked()
+{
+    if (thisPort != nullptr) {
+        thisPort->close();
+        thisPort = nullptr;
+    }
+    ui->comboBox->setCurrentIndex(-1);
 }

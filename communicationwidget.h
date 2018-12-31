@@ -35,6 +35,8 @@ private slots:
     void read();
     void setPort(QString name);
 
+    void on_clearPortButton_clicked();
+
 private:
     Ui::CommunicationWidget *ui;
     QSerialPort* thisPort;
