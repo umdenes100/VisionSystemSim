@@ -63,6 +63,29 @@ OSV::OSV(QObject *parent) : QObject(parent)
         sensors[i] = false;
     }
     rand_eng.seed(gen.generate());
+
+    readSettings();
+
+}
+
+void OSV::readSettings()
+{
+    QSettings settings("UMD ENES100", "Simulator");
+    settings.beginGroup("OSVSettings");
+    for (int i=0; i<12; i++) {
+        QString name = "sensor" + QString::number(i);
+        sensors[i] = settings.value(name, QVariant(false)).toBool();
+    }
+}
+
+void OSV::writeSettings()
+{
+    QSettings settings("UMD ENES100", "Simulator");
+    settings.beginGroup("OSVSettings");
+    for (int i=0; i<12; i++) {
+        QString name = "sensor" + QString::number(i);
+        settings.setValue(name, sensors[i]);
+    }
 }
 
 QImage OSV::draw()

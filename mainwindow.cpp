@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->settingswidget, SIGNAL(entropyBoxChanged(bool)), ui->arena, SLOT(entropyChanged(bool)));
     connect(ui->settingswidget, SIGNAL(obstaclesBoxChanged(bool)), ui->arena, SLOT(obstaclesToggled(bool)));
     connect(this, SIGNAL(windowClosed()), ui->settingswidget, SLOT(writeSettings()));
+    connect(this, SIGNAL(windowClosed()), ui->arena->osv, SLOT(writeSettings()));
     readSettings();
 }
 

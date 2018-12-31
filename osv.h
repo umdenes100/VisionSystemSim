@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QPen>
 #include <QPainter>
+#include <QSettings>
 #include <QRandomGenerator>
 #include <algorithm>
 
@@ -42,12 +43,14 @@ public:
 signals:
 
 public slots:
+    void writeSettings();
 
 private:
     QRandomGenerator gen = QRandomGenerator::securelySeeded();
     std::default_random_engine rand_eng;
     int prevLeftPWM, prevRightPWM;
     const QColor treadColor = QColor(80,80,80);
+    void readSettings();
 };
 
 #endif // OSV_H

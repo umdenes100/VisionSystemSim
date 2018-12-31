@@ -16,7 +16,6 @@ SettingsWidget::~SettingsWidget()
 
 void SettingsWidget::writeSettings()
 {
-    qDebug() << "Writing settingsWidget settings";
     QSettings settings("UMD ENES100", "Simulator");
     settings.beginGroup("SettingsWidget");
     settings.setValue("entropy", entropyEnabled);
@@ -25,7 +24,6 @@ void SettingsWidget::writeSettings()
 
 void SettingsWidget::readSettings()
 {
-    qDebug() << "Reading settingsWidget settings";
     QSettings settings("UMD ENES100", "Simulator");
     settings.beginGroup("SettingsWidget");
     entropyEnabled = settings.value("entropy", QVariant(false)).toBool();
