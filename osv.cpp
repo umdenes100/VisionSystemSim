@@ -76,6 +76,7 @@ void OSV::readSettings()
         QString name = "sensor" + QString::number(i);
         sensors[i] = settings.value(name, QVariant(false)).toBool();
     }
+    settings.endGroup();
 }
 
 void OSV::writeSettings()
@@ -86,6 +87,7 @@ void OSV::writeSettings()
         QString name = "sensor" + QString::number(i);
         settings.setValue(name, sensors[i]);
     }
+    settings.endGroup();
 }
 
 QImage OSV::draw()

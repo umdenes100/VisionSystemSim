@@ -1,7 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QDesktopWidget>
-#include <QStyle>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -32,6 +30,8 @@ void MainWindow::writeSettings()
     QSettings settings("UMD ENES100", "Simulator");
     settings.beginGroup("MainWindow");
     settings.setValue("size", size());
+    settings.setValue("pos", pos());
+    settings.endGroup();
 }
 
 void MainWindow::readSettings()
@@ -39,6 +39,8 @@ void MainWindow::readSettings()
     QSettings settings("UMD ENES100", "Simulator");
     settings.beginGroup("MainWindow");
     resize(settings.value("size", size()).toSize());
+    move(settings.value("pos", pos()).toPoint());
+    settings.endGroup();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -50,9 +52,11 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::centerAndResize()
 {
-    QSize availableSize = qApp->desktop()->availableGeometry().size();
-    QSize newSize(availableSize.width(), availableSize.height());
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QSize availableSize = screen->availableGeometry().size();
+    QRect screenrect = screen->geometry();
 
-    setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, newSize, qApp->desktop()->availableGeometry()));
+    setGeometry(0, 0, availableSize.width(), availableSize.height());
+    move(screenrect.left(), screenrect.top());
 }
 

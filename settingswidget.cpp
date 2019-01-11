@@ -20,6 +20,7 @@ void SettingsWidget::writeSettings()
     settings.beginGroup("SettingsWidget");
     settings.setValue("entropy", entropyEnabled);
     settings.setValue("obstacles", obstaclesEnabled);
+    settings.endGroup();
 }
 
 void SettingsWidget::readSettings()
@@ -32,6 +33,7 @@ void SettingsWidget::readSettings()
     ui->entropyEnabled->setChecked(entropyEnabled);
     emit obstaclesBoxChanged(obstaclesEnabled);
     emit entropyBoxChanged(entropyEnabled);
+    settings.endGroup();
 }
 
 void SettingsWidget::on_RandomizeButton_clicked()
