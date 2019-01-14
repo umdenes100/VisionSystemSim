@@ -13,11 +13,30 @@ Arena::Arena(QWidget *parent) :
     refreshTimer = new QTimer();
     connect(refreshTimer, SIGNAL(timeout()), this, SLOT(timerTick()));
     refreshTimer->start(3);
+    readSettings();
 }
 
 Arena::~Arena()
 {
     delete ui;
+}
+
+void Arena::writeSettings()
+{
+    QSettings settings("UMD ENES100", "Simulator");
+    settings.beginGroup("Arena");
+    settings.setValue("entropy", entropyEnabled);
+    settings.setValue("obstacles", obstaclesEnabled);
+    settings.endGroup();
+}
+
+void Arena::readSettings()
+{
+    QSettings settings("UMD ENES100", "Simulator");
+    settings.beginGroup("Arena");
+    entropyEnabled = settings.value("entropy", QVariant(false)).toBool();
+    obstaclesEnabled = settings.value("obstacles", QVariant(true)).toBool();
+    settings.endGroup();
 }
 
 void Arena::timerTick()

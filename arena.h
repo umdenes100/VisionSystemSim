@@ -11,6 +11,7 @@
 #include <math.h>
 #include <QHelpEvent>
 #include <QToolTip>
+#include <QSettings>
 
 #include "osv.h"
 #include "detail.h"
@@ -34,12 +35,15 @@ public:
     double getDistance(int index);
     Point destination, startingLocation;
     bool getEntropy();
-
+    bool entropyEnabled = false;
+    bool obstaclesEnabled = true;
     struct Obstacle {
         Point location;
         double length, width;
     };
 
+public slots:
+    void writeSettings();
 
 private slots:
     void timerTick();
@@ -55,13 +59,12 @@ private:
     void updateDestination();
     bool event(QEvent* event);
     bool checkForCollisions();
+    void readSettings();
 
     QTimer* refreshTimer;
     QTime timeElapsed;
     int arenaWidthPx, arenaHeightPx;
     int xOffsetPx, yOffsetPx;
-    bool entropyEnabled = false;
-    bool obstaclesEnabled = true;
     inline double distance(Point a, QPointF *b);
     const QColor sandColor = QColor(250, 226, 190);
     const QColor obstacleColor = QColor(150, 126, 90);

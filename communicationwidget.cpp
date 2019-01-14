@@ -1,10 +1,5 @@
 #include "communicationwidget.h"
 #include "ui_communicationwidget.h"
-#include <QThread>
-//#include <QSerialPort>
-//#include <QSerialPortInfo>
-#include <QtSerialPort>
-#include <QtSerialPort/qserialportinfo.h>
 
 CommunicationWidget::CommunicationWidget(QWidget *parent) :
     QWidget(parent),

@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->settingswidget, SIGNAL(obstaclesBoxChanged(bool)), ui->arena, SLOT(obstaclesToggled(bool)));
     connect(this, SIGNAL(windowClosed()), ui->settingswidget, SLOT(writeSettings()));
     connect(this, SIGNAL(windowClosed()), ui->arena->osv, SLOT(writeSettings()));
+    connect(this, SIGNAL(windowClosed()), ui->arena, SLOT(writeSettings()));
     readSettings();
 }
 

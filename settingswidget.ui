@@ -33,126 +33,172 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
-    <number>20</number>
+    <number>9</number>
    </property>
    <property name="topMargin">
     <number>0</number>
    </property>
    <item>
-    <widget class="QPushButton" name="documentationButton">
-     <property name="font">
-      <font>
-       <pointsize>9</pointsize>
-      </font>
+    <layout class="QVBoxLayout" name="buttonLayout">
+     <property name="spacing">
+      <number>15</number>
      </property>
-     <property name="toolTip">
-      <string>View documentation for the simulator</string>
-     </property>
-     <property name="toolTipDuration">
-      <number>2000</number>
-     </property>
-     <property name="text">
-      <string>Documentation</string>
-     </property>
-    </widget>
+     <item>
+      <widget class="QPushButton" name="documentationButton">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>View documentation for the simulator</string>
+       </property>
+       <property name="toolTipDuration">
+        <number>2000</number>
+       </property>
+       <property name="text">
+        <string>Documentation</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="ResetButton">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>Reset OSV location and speed</string>
+       </property>
+       <property name="toolTipDuration">
+        <number>2000</number>
+       </property>
+       <property name="text">
+        <string>Reset</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="RandomizeButton">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>Reset OSV location and randomize the obstacles and destination</string>
+       </property>
+       <property name="toolTipDuration">
+        <number>2000</number>
+       </property>
+       <property name="text">
+        <string>Randomize</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="OSVButton">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>Edit OSV distance sensors</string>
+       </property>
+       <property name="toolTipDuration">
+        <number>2000</number>
+       </property>
+       <property name="text">
+        <string>Edit OSV</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
-    <widget class="QPushButton" name="ResetButton">
-     <property name="font">
-      <font>
-       <pointsize>9</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>Reset OSV location and speed</string>
-     </property>
-     <property name="toolTipDuration">
-      <number>2000</number>
-     </property>
-     <property name="text">
-      <string>Reset</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QPushButton" name="RandomizeButton">
-     <property name="font">
-      <font>
-       <pointsize>9</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>Reset OSV location and randomize the obstacles and destination</string>
-     </property>
-     <property name="toolTipDuration">
-      <number>2000</number>
-     </property>
-     <property name="text">
-      <string>Randomize</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QPushButton" name="OSVButton">
-     <property name="font">
-      <font>
-       <pointsize>9</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>Edit OSV distance sensors</string>
-     </property>
-     <property name="toolTipDuration">
-      <number>2000</number>
-     </property>
-     <property name="text">
-      <string>Edit OSV</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="obstaclesEnabled">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>Turn obstacles on or off</string>
-     </property>
-     <property name="toolTipDuration">
-      <number>2000</number>
-     </property>
-     <property name="text">
-      <string>Obstacles</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="entropyEnabled">
+    <widget class="QLabel" name="obstaclesLabel">
      <property name="font">
       <font>
        <pointsize>10</pointsize>
       </font>
      </property>
-     <property name="toolTip">
-      <string>Enable or disable entropy (See documentation for details)</string>
-     </property>
-     <property name="toolTipDuration">
-      <number>2000</number>
-     </property>
      <property name="text">
-      <string>Entropy enabled</string>
+      <string>Obstacles:</string>
      </property>
     </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="obstacleBoxes">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <item>
+      <widget class="QCheckBox" name="obstaclesOn">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>On</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="obstaclesOff">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Off</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="commLabel">
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Communication:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="commBoxes">
+     <item>
+      <widget class="QCheckBox" name="commIdeal">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Ideal</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="commRealistic">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Realistic</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

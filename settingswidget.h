@@ -36,8 +36,10 @@ private slots:
     void on_OSVButton_clicked();
     void on_ResetButton_clicked();
     void on_documentationButton_clicked();
-    void on_obstaclesEnabled_stateChanged(int arg1);
-    void on_entropyEnabled_stateChanged(int arg1);
+    void on_obstaclesOn_clicked();
+    void on_obstaclesOff_clicked();
+    void on_commIdeal_clicked();
+    void on_commRealistic_clicked();
 
 private:
     Ui::SettingsWidget *ui;

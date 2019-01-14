@@ -2,10 +2,11 @@
 #define COMMUNICATIONWIDGET_H
 
 #include <QWidget>
-
 #include <QTimer>
 #include <QDebug>
 #include <QScrollBar>
+#include <QThread>
+#include <QtSerialPort>
 
 #include "response.h"
 #include "osv.h"
