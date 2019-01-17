@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QPainter>
 
+#include "detail.h"
 #include "osv.h"
 
 namespace Ui {
@@ -22,6 +23,10 @@ public:
 
 public slots:
     void buttonPressed(int index);
+
+private slots:
+    void on_osvLengthSlider_valueChanged(int value);
+    void on_osvWidthSlider_valueChanged(int value);
 
 private:
     Ui::OSVEditorWindow *ui;

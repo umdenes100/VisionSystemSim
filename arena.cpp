@@ -215,6 +215,60 @@ void Arena::paintEvent(QPaintEvent *event)
 
     paint.drawEllipse(metersToPixels(destination), metersToPixels(TARGET_DIAMETER / 2), metersToPixels(TARGET_DIAMETER / 2));
 
+
+
+    //start of edit
+    // we have to get the slope of the front side of the osv first
+    double cos_theta = cos(osv->location.theta);
+    double sin_theta = sin(osv->location.theta);
+    Point midPointFront;
+    midPointFront.x = osv->location.x + osv->length / 2 * cos_theta;
+    midPointFront.y = osv->location.y + osv->length / 2 * sin_theta;
+
+    Point a;
+    a.x = midPointFront.x - osv->width / 2 * sin_theta;
+    a.y = midPointFront.y + osv->width / 2 * cos_theta;
+
+    Point b;
+    b.x = midPointFront.x + osv->width / 2 * sin_theta;
+    b.y = midPointFront.y - osv->width / 2 * cos_theta;
+
+    Point midPointBack;
+    midPointBack.x = osv->location.x - osv->length / 2 * cos_theta;
+    midPointBack.y = osv->location.y - osv->length / 2 * sin_theta;
+
+    Point c;
+    c.x = midPointBack.x - osv->width / 2 * sin_theta;
+    c.y = midPointBack.y + osv->width / 2 * cos_theta;
+
+    Point d;
+    d.x = midPointBack.x + osv->width / 2 * sin_theta;
+    d.y = midPointBack.y - osv->width / 2 * cos_theta;
+
+    Point midPointLeft;
+    midPointLeft.x = (a.x + c.x) / 2;
+    midPointLeft.y = (a.y + c.y) / 2;
+
+    Point midPointRight;
+    midPointRight.x = (b.x + d.x) / 2;
+    midPointRight.y = (b.y + d.y) / 2;
+
+    Point sensorLocations[12] {a, midPointFront, b, b, midPointRight, d, d, midPointBack, c, c, midPointLeft, a};
+
+    for (int index = 0; index < 12; index ++) {
+        if (osv->sensors[index]) {
+            Point loc = sensorLocations[index];
+            int sideIndex = index / 3;
+            double orientation = osv->location.theta - sideIndex * PI / 2;
+
+            double range = 1.0;
+            Point endPoint;
+            endPoint.x = loc.x + range * cos(orientation);
+            endPoint.y = loc.y + range * sin(orientation);
+            QLineF sensorTrace(loc.x, loc.y, endPoint.x, endPoint.y);
+            paint.drawLine(metersToPixels(loc), metersToPixels(endPoint));
+        }
+    }
 }
 
 void Arena::entropyChanged(bool enabled)
@@ -399,7 +453,7 @@ double Arena::getDistance(int index)
     Point sensorLocations[12] {a, midPointFront, b, b, midPointRight, d, d, midPointBack, c, c, midPointLeft, a};
 
     int sideIndex = index / 3;
-    double orientation = osv->location.theta + sideIndex * PI / 2;
+    double orientation = osv->location.theta - sideIndex * PI / 2;
 
     double range = 1.0;
     Point endPoint;
@@ -420,7 +474,7 @@ double Arena::getDistance(int index)
 
             for(QLineF obstacleSide : obstacleSides) {
                 if(obstacleSide.intersect(sensorTrace, tempPoint) == QLineF::BoundedIntersection) {
-                            minimumDistance = MIN(minimumDistance,distance(sensorLocations[index], tempPoint));
+                    minimumDistance = MIN(minimumDistance,distance(sensorLocations[index], tempPoint));
                 }
             }
         }

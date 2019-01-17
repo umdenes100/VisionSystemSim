@@ -13,8 +13,6 @@
 
 #include "detail.h"
 
-#define DEFAULT_WIDTH 0.229
-#define DEFAULT_LENGTH 0.239
 #define TANK_SPEED 0.35
 #define ROTATIONS_PER_SECOND 0.16
 #define WOOD_WIDTH 120

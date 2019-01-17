@@ -8,8 +8,8 @@ OSV::OSV(QObject *parent) : QObject(parent)
     destination.x = 0.0;
     destination.y = 0.0;
 
-    width = DEFAULT_WIDTH;
-    length = DEFAULT_LENGTH;
+    width = DEFAULT_OSV_WIDTH;
+    length = DEFAULT_OSV_LENGTH;
     location.theta = 0;
     leftPWM = 0;
     rightPWM = 0;
@@ -22,7 +22,9 @@ OSV::OSV(QObject *parent) : QObject(parent)
     QPen pen(Qt::green);
     pen.setWidth(5);
 
-    QImage image(widthPx, lengthPx, QImage::Format_ARGB32);
+//    QImage image(widthPx, lengthPx, QImage::Format_ARGB32);
+    QImage image(lengthPx, widthPx, QImage::Format_ARGB32);
+
     image.fill(qRgba(0, 0, 0, 0));
     QPainter paint;
     paint.begin(&image);
@@ -30,16 +32,16 @@ OSV::OSV(QObject *parent) : QObject(parent)
 
     //draw treads
     int treadWidth = 28;
-    paint.fillRect(0, 0, widthPx, treadWidth, treadColor);
-    paint.fillRect(0, lengthPx - treadWidth, widthPx, treadWidth, treadColor);
+    paint.fillRect(0, 0, lengthPx, treadWidth, treadColor);
+    paint.fillRect(0, widthPx - treadWidth, lengthPx, treadWidth, treadColor);
 
     //draw body
-    paint.fillRect(20, 50, widthPx - 40, lengthPx - 100, Qt::black);
+    paint.fillRect(20, 50, lengthPx - 40, widthPx - 100, Qt::black);
 
     //draw aruco marker
-    const int marker_top_x = widthPx / 2 - MARKER_WIDTH / 2;
-    const int marker_top_y = lengthPx / 2 - MARKER_WIDTH / 2;
-    paint.fillRect(widthPx / 2 - WOOD_WIDTH / 2, lengthPx / 2 - WOOD_WIDTH / 2, WOOD_WIDTH, WOOD_WIDTH, Qt::white);
+    const int marker_top_x = lengthPx / 2 - MARKER_WIDTH / 2;
+    const int marker_top_y = widthPx / 2 - MARKER_WIDTH / 2;
+    paint.fillRect(lengthPx / 2 - WOOD_WIDTH / 2, widthPx / 2 - WOOD_WIDTH / 2, WOOD_WIDTH, WOOD_WIDTH, Qt::white);
     paint.fillRect(marker_top_x, marker_top_y, MARKER_WIDTH, MARKER_WIDTH, Qt::black);
 
     //marker #4
@@ -76,6 +78,8 @@ void OSV::readSettings()
         QString name = "sensor" + QString::number(i);
         sensors[i] = settings.value(name, QVariant(false)).toBool();
     }
+    this->length = settings.value("osv length", QVariant(DEFAULT_OSV_LENGTH)).toDouble();
+    this->width = settings.value("osv width", QVariant(DEFAULT_OSV_WIDTH)).toDouble();
     settings.endGroup();
 }
 
@@ -87,6 +91,8 @@ void OSV::writeSettings()
         QString name = "sensor" + QString::number(i);
         settings.setValue(name, sensors[i]);
     }
+    settings.setValue("osv length", this->length);
+    settings.setValue("osv width", this->width);
     settings.endGroup();
 }
 
@@ -95,7 +101,7 @@ QImage OSV::draw()
     int widthPx = static_cast<int>(width * ppm);
     int lengthPx = static_cast<int>(length * ppm);
 
-    QImage scaled = osvImage.scaled(widthPx, lengthPx);
+    QImage scaled = osvImage.scaled(lengthPx, widthPx);
     QPoint center = scaled.rect().center();
     QMatrix matrix;
     matrix.translate(center.x(), center.y());

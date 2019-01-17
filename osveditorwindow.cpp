@@ -1,113 +1,34 @@
 #include "osveditorwindow.h"
 #include "ui_osveditorwindow.h"
-#include <QPainter>
 
 OSVEditorWindow::OSVEditorWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::OSVEditorWindow)
 {
     ui->setupUi(this);
+
 }
 
 void OSVEditorWindow::init(OSV *osv)
 {
     this->osv = osv;
+    EditorButton* widgetList [] = {ui->widget, ui->widget_2, ui->widget_3, ui->widget_4, ui->widget_5,ui->widget_6,
+                                   ui->widget_7, ui->widget_8, ui->widget_9, ui->widget_10, ui->widget_11, ui->widget_12};
 
-    ui->widget->setIndex(0);
-    connect(ui->widget, SIGNAL(pressed(int)), this, SLOT(buttonPressed(int)));
-    if(osv->sensors[0]) {
-        ui->widget->setState(2);
-    } else {
-        ui->widget->setState(0);
+    for (int i=0; i<12; i++) {
+        widgetList[i]->setIndex(i);
+        connect(widgetList[i], SIGNAL(pressed(int)), this, SLOT(buttonPressed(int)));
+        if (osv->sensors[i]) {
+            widgetList[i]->setState(2);
+        } else {
+            widgetList[i]->setState(0);
+        }
     }
 
-    ui->widget_2->setIndex(1);
-    connect(ui->widget_2, SIGNAL(pressed(int)), this, SLOT(buttonPressed(int)));
-    if(osv->sensors[1]) {
-        ui->widget_2->setState(2);
-    } else {
-        ui->widget_2->setState(0);
-    }
-
-    ui->widget_3->setIndex(2);
-    connect(ui->widget_3, SIGNAL(pressed(int)), this, SLOT(buttonPressed(int)));
-    if(osv->sensors[2]) {
-        ui->widget_3->setState(2);
-    } else {
-        ui->widget_3->setState(0);
-    }
-
-    ui->widget_4->setIndex(3);
-    connect(ui->widget_4, SIGNAL(pressed(int)), this, SLOT(buttonPressed(int)));
-    if(osv->sensors[3]) {
-        ui->widget_4->setState(2);
-    } else {
-        ui->widget_4->setState(0);
-    }
-
-    ui->widget_5->setIndex(4);
-    connect(ui->widget_5, SIGNAL(pressed(int)), this, SLOT(buttonPressed(int)));
-    if(osv->sensors[4]) {
-        ui->widget_5->setState(2);
-    } else {
-        ui->widget_5->setState(0);
-    }
-
-    ui->widget_6->setIndex(5);
-    connect(ui->widget_6, SIGNAL(pressed(int)), this, SLOT(buttonPressed(int)));
-    if(osv->sensors[5]) {
-        ui->widget_6->setState(2);
-    } else {
-        ui->widget_6->setState(0);
-    }
-
-    ui->widget_7->setIndex(6);
-    connect(ui->widget_7, SIGNAL(pressed(int)), this, SLOT(buttonPressed(int)));
-    if(osv->sensors[6]) {
-        ui->widget_7->setState(2);
-    } else {
-        ui->widget_7->setState(0);
-    }
-
-    ui->widget_8->setIndex(7);
-    connect(ui->widget_8, SIGNAL(pressed(int)), this, SLOT(buttonPressed(int)));
-    if(osv->sensors[7]) {
-        ui->widget_8->setState(2);
-    } else {
-        ui->widget_8->setState(0);
-    }
-
-    ui->widget_9->setIndex(8);
-    connect(ui->widget_9, SIGNAL(pressed(int)), this, SLOT(buttonPressed(int)));
-    if(osv->sensors[8]) {
-        ui->widget_9->setState(2);
-    } else {
-        ui->widget_9->setState(0);
-    }
-
-    ui->widget_10->setIndex(9);
-    connect(ui->widget_10, SIGNAL(pressed(int)), this, SLOT(buttonPressed(int)));
-    if(osv->sensors[9]) {
-        ui->widget_10->setState(2);
-    } else {
-        ui->widget_10->setState(0);
-    }
-    ui->widget_11->setIndex(10);
-    connect(ui->widget_11, SIGNAL(pressed(int)), this, SLOT(buttonPressed(int)));
-    if(osv->sensors[10]) {
-        ui->widget_11->setState(2);
-    } else {
-        ui->widget_11->setState(0);
-    }
-
-    ui->widget_12->setIndex(11);
-    connect(ui->widget_12, SIGNAL(pressed(int)), this, SLOT(buttonPressed(int)));
-    if(osv->sensors[11]) {
-        ui->widget_12->setState(2);
-    } else {
-        ui->widget_12->setState(0);
-    }
-
+    ui->osvWidthSlider->setValue(static_cast<int>((osv->width - OSV_MIN_DIMENSION_METERS) * 99.0 / (OSV_MAX_DIMENSION_METERS - OSV_MIN_DIMENSION_METERS)));
+    ui->osvLengthSlider->setValue(static_cast<int>((osv->length - OSV_MIN_DIMENSION_METERS) * 99.0 / (OSV_MAX_DIMENSION_METERS - OSV_MIN_DIMENSION_METERS)));
+    ui->widthLabel->setText("Width: " + QString::number(static_cast<int>(osv->width * 1000)) + "mm");
+    ui->lengthLabel->setText("Length: " + QString::number(static_cast<int>(osv->length * 1000)) + "mm");
 }
 
 OSVEditorWindow::~OSVEditorWindow()
@@ -135,4 +56,16 @@ void OSVEditorWindow::paintEvent(QPaintEvent *e)
 void OSVEditorWindow::buttonPressed(int index)
 {
     osv->toggleSensor(index);
+}
+
+void OSVEditorWindow::on_osvLengthSlider_valueChanged(int value)
+{
+    osv->length = OSV_MIN_DIMENSION_METERS + ((OSV_MAX_DIMENSION_METERS - OSV_MIN_DIMENSION_METERS) * value / 99.0);
+    ui->lengthLabel->setText("Length: " + QString::number(static_cast<int>(osv->length * 1000)) + "mm");
+}
+
+void OSVEditorWindow::on_osvWidthSlider_valueChanged(int value)
+{
+    osv->width = OSV_MIN_DIMENSION_METERS + ((OSV_MAX_DIMENSION_METERS - OSV_MIN_DIMENSION_METERS) * value / 99.0);
+    ui->widthLabel->setText("Width: " + QString::number(static_cast<int>(osv->width * 1000)) + "mm");
 }
