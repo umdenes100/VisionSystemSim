@@ -93,12 +93,12 @@ void CommunicationWidget::executeCommand()
     } else if(commandBuffer[0] == 'l') {
         // set left pwm
         commandBuffer.remove("l");
-        osv->setLeftPWM(commandBuffer.toInt(), arena->getEntropy());
+        osv->setLeftPWM(commandBuffer.toInt());
         return;
     } else if(commandBuffer[0] == 'r') {
         //set right pwm
         commandBuffer.remove("r");
-        osv->setRightPWM(commandBuffer.toInt(), arena->getEntropy());
+        osv->setRightPWM(commandBuffer.toInt());
         return;
     }else if(commandBuffer.contains("distance")) {
         // read distance

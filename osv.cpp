@@ -22,7 +22,6 @@ OSV::OSV(QObject *parent) : QObject(parent)
     QPen pen(Qt::green);
     pen.setWidth(5);
 
-//    QImage image(widthPx, lengthPx, QImage::Format_ARGB32);
     QImage image(lengthPx, widthPx, QImage::Format_ARGB32);
 
     image.fill(qRgba(0, 0, 0, 0));
@@ -51,8 +50,6 @@ OSV::OSV(QObject *parent) : QObject(parent)
     paint.fillRect(marker_top_x + square_width, marker_top_y + 3*square_width, square_width, 2*square_width, Qt::white);
     paint.fillRect(marker_top_x + square_width, marker_top_y + 4*square_width, 3*square_width, square_width, Qt::white);
     paint.fillRect(marker_top_x + 4*square_width, marker_top_y + 3*square_width, square_width, square_width, Qt::white);
-
-
 
     //draw arrow
     paint.drawLine(marker_top_x, marker_top_y, marker_top_x + MARKER_WIDTH, marker_top_y);
@@ -139,30 +136,14 @@ void OSV::refreshLocation()
 
 }
 
-void OSV::setLeftPWM(int pwm, bool entropy)
+void OSV::setLeftPWM(int pwm)
 {
-    if (pwm == prevLeftPWM) {
-        //prevent repeated calls from resetting pwm to avoid averaging of randomness
-        return;
-    }
-    prevLeftPWM = pwm;
-    double entropy_stddev = entropy ? ENTROPY_STDDEV : 0.0;
-    std::normal_distribution<double> entropy_dist (pwm, pwm * entropy_stddev);
-    leftPWM = static_cast<int>(entropy_dist(gen));
-    leftPWM = MAX(-255,MIN(255, leftPWM));
+    leftPWM = pwm;
 }
 
-void OSV::setRightPWM(int pwm, bool entropy)
+void OSV::setRightPWM(int pwm)
 {
-    if (pwm == prevRightPWM) {
-        //prevent repeated calls from resetting pwm to avoid averaging of randomness
-        return;
-    }
-    prevRightPWM = pwm;
-    double entropy_stddev = entropy ? 0.1 : 0.0;
-    std::normal_distribution<double> entropy_dist (pwm,pwm * entropy_stddev);
-    rightPWM = static_cast<int>(entropy_dist(gen));
-    rightPWM = MAX(-255, MIN(255,rightPWM));
+    rightPWM = pwm;
 }
 
 void OSV::toggleSensor(int index)

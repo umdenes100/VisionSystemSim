@@ -29,8 +29,8 @@ public:
     Point location, prevLocation, startingLocation, destination;
     bool sensors[12];
     double length, width;
-    void setRightPWM(int pwm, bool entropy);
-    void setLeftPWM(int pwm, bool entropy);
+    void setRightPWM(int pwm);
+    void setLeftPWM(int pwm);
     void setLocation(Point p);
     double ppm;
     QImage draw();

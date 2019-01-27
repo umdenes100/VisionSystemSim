@@ -65,29 +65,29 @@ bool Arena::checkForCollisions()
     // points a,b,c,d represent the four corners of the OSV
     double cos_theta = cos(osv->location.theta);
     double sin_theta = sin(osv->location.theta);
-    Point midPoint;
-    midPoint.x = osv->location.x + osv->width / 2 * cos_theta;
-    midPoint.y = osv->location.y + osv->width / 2 * sin_theta;
+    Point midPointFront;
+    midPointFront.x = osv->location.x + osv->length / 2 * cos_theta;
+    midPointFront.y = osv->location.y + osv->length / 2 * sin_theta;
 
     Point a;
-    a.x = midPoint.x - osv->length / 2 * sin_theta;
-    a.y = midPoint.y + osv->length / 2 * cos_theta;
+    a.x = midPointFront.x - osv->width / 2 * sin_theta;
+    a.y = midPointFront.y + osv->width / 2 * cos_theta;
 
     Point b;
-    b.x = midPoint.x + osv->length / 2 * sin_theta;
-    b.y = midPoint.y - osv->length / 2 * cos_theta;
+    b.x = midPointFront.x + osv->width / 2 * sin_theta;
+    b.y = midPointFront.y - osv->width / 2 * cos_theta;
 
-    Point midPoint2;
-    midPoint2.x = osv->location.x - osv->width / 2 * cos_theta;
-    midPoint2.y = osv->location.y - osv->width / 2 * sin_theta;
+    Point midPointBack;
+    midPointBack.x = osv->location.x - osv->length / 2 * cos_theta;
+    midPointBack.y = osv->location.y - osv->length / 2 * sin_theta;
 
     Point c;
-    c.x = midPoint2.x - osv->length / 2 * sin_theta;
-    c.y = midPoint2.y + osv->length / 2 * cos_theta;
+    c.x = midPointBack.x - osv->width / 2 * sin_theta;
+    c.y = midPointBack.y + osv->width / 2 * cos_theta;
 
     Point d;
-    d.x = midPoint2.x + osv->length / 2 * sin_theta;
-    d.y = midPoint2.y - osv->length / 2 * cos_theta;
+    d.x = midPointBack.x + osv->width / 2 * sin_theta;
+    d.y = midPointBack.y - osv->width / 2 * cos_theta;
 
     QLineF frontOSV(a.x, a.y, b.x, b.y);
     QLineF leftOSV(a.x, a.y, c.x, c.y);
@@ -218,7 +218,7 @@ void Arena::paintEvent(QPaintEvent *event)
 
 
     //start of edit
-    // we have to get the slope of the front side of the osv first
+    //we have to get the slope of the front side of the osv first
     double cos_theta = cos(osv->location.theta);
     double sin_theta = sin(osv->location.theta);
     Point midPointFront;
@@ -274,8 +274,6 @@ void Arena::paintEvent(QPaintEvent *event)
 void Arena::entropyChanged(bool enabled)
 {
     entropyEnabled = enabled;
-    osv->setLeftPWM(osv->leftPWM, entropyEnabled);
-    osv->setRightPWM(osv->rightPWM, entropyEnabled);
 }
 void Arena::obstaclesToggled(bool enabled)
 {
@@ -310,8 +308,8 @@ void Arena::updateDestination()
 
 void Arena::randomize()
 {
-    osv->setLeftPWM(0, entropyEnabled);
-    osv->setRightPWM(0,entropyEnabled);
+    osv->setLeftPWM(0);
+    osv->setRightPWM(0);
 
     static const double quadrantBounds[4][4] = {
         // Min x, Max x, Min y, Max y
@@ -403,8 +401,8 @@ void Arena::randomize()
 
 void Arena::reset()
 {
-    osv->setLeftPWM(0,entropyEnabled);
-    osv->setRightPWM(0,entropyEnabled);
+    osv->setLeftPWM(0);
+    osv->setRightPWM(0);
     osv->setLocation(startingLocation);
 }
 
