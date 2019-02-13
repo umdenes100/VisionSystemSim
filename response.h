@@ -9,7 +9,7 @@
 #include <QRandomGenerator>
 #include "detail.h"
 
-#define RESP_TIME_MILLIS 250                        //average response time of the VS
+#define RESP_TIME_MILLIS 140                        //average response time of the VS
 #define RESP_DELAY_MILLIS (RESP_TIME_MILLIS - 75)   //avg delay used (offset by 50sms because of other delays)
 
 static QRandomGenerator gen = QRandomGenerator::securelySeeded();
