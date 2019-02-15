@@ -12,7 +12,7 @@
 #include "osv.h"
 #include "arena.h"
 
-#define FAIL_PERIOD 9                               //enes library calls will fail at a rate ~ 1/FAIL_PERIOD
+#define FAIL_PERIOD 20                               //enes library calls will fail at a rate ~ 1/FAIL_PERIOD
 
 namespace Ui {
 class CommunicationWidget;

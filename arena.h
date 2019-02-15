@@ -16,6 +16,9 @@
 #include "osv.h"
 #include "detail.h"
 
+#define OBSTACLE_WIDTH 0.2
+#define OBSTACLE_HEIGHT 0.5
+#define OSV_WIDTH 0.35
 #define TARGET_DIAMETER 0.18
 
 namespace Ui {

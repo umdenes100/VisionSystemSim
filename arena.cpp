@@ -215,60 +215,6 @@ void Arena::paintEvent(QPaintEvent *event)
 
     paint.drawEllipse(metersToPixels(destination), metersToPixels(TARGET_DIAMETER / 2), metersToPixels(TARGET_DIAMETER / 2));
 
-
-
-    //start of edit
-    //we have to get the slope of the front side of the osv first
-    double cos_theta = cos(osv->location.theta);
-    double sin_theta = sin(osv->location.theta);
-    Point midPointFront;
-    midPointFront.x = osv->location.x + osv->length / 2 * cos_theta;
-    midPointFront.y = osv->location.y + osv->length / 2 * sin_theta;
-
-    Point a;
-    a.x = midPointFront.x - osv->width / 2 * sin_theta;
-    a.y = midPointFront.y + osv->width / 2 * cos_theta;
-
-    Point b;
-    b.x = midPointFront.x + osv->width / 2 * sin_theta;
-    b.y = midPointFront.y - osv->width / 2 * cos_theta;
-
-    Point midPointBack;
-    midPointBack.x = osv->location.x - osv->length / 2 * cos_theta;
-    midPointBack.y = osv->location.y - osv->length / 2 * sin_theta;
-
-    Point c;
-    c.x = midPointBack.x - osv->width / 2 * sin_theta;
-    c.y = midPointBack.y + osv->width / 2 * cos_theta;
-
-    Point d;
-    d.x = midPointBack.x + osv->width / 2 * sin_theta;
-    d.y = midPointBack.y - osv->width / 2 * cos_theta;
-
-    Point midPointLeft;
-    midPointLeft.x = (a.x + c.x) / 2;
-    midPointLeft.y = (a.y + c.y) / 2;
-
-    Point midPointRight;
-    midPointRight.x = (b.x + d.x) / 2;
-    midPointRight.y = (b.y + d.y) / 2;
-
-    Point sensorLocations[12] {a, midPointFront, b, b, midPointRight, d, d, midPointBack, c, c, midPointLeft, a};
-
-    for (int index = 0; index < 12; index ++) {
-        if (osv->sensors[index]) {
-            Point loc = sensorLocations[index];
-            int sideIndex = index / 3;
-            double orientation = osv->location.theta - sideIndex * PI / 2;
-
-            double range = 1.0;
-            Point endPoint;
-            endPoint.x = loc.x + range * cos(orientation);
-            endPoint.y = loc.y + range * sin(orientation);
-            QLineF sensorTrace(loc.x, loc.y, endPoint.x, endPoint.y);
-            paint.drawLine(metersToPixels(loc), metersToPixels(endPoint));
-        }
-    }
 }
 
 void Arena::entropyChanged(bool enabled)
@@ -311,88 +257,44 @@ void Arena::randomize()
     osv->setLeftPWM(0);
     osv->setRightPWM(0);
 
-    static const double quadrantBounds[4][4] = {
-        // Min x, Max x, Min y, Max y
-        {1.35, 2.25, 1.0, 1.8},
-        {1.35, 2.25, 0.2, 1.0},
-        {2.25, 3.8, 0.2, 1.0},
-        {2.25, 3.8, 1.0, 1.8}
-    };
-
     // Generate a random starting position
     startingLocation.x = 0.35;
     startingLocation.y = 0.4 + (rand() % 5) * 0.3;
     startingLocation.theta = (rand() % 4) * PI / 2 - PI;
 
-    // Generate random positions and orientations for obstacles
-    int largeObstacleQuadrant = rand() % 3;
-    for (int i = 0; i < 3; i++) {
-        // Reassign sizes based on randomization
-        double d1 = i == largeObstacleQuadrant ? 0.41 : 0.32;
-        double d2 = i == largeObstacleQuadrant ? 0.23 : 0.13;
+    static const int presets[6][3] = {
+           {0, 1, 2},
+           {2, 1, 0},
+           {0, 2, 1},
+           {2, 0, 1},
+           {1, 0, 2},
+           {1, 2, 0}
+       };
 
-        // Random orientation
-        if (rand() % 2) {
-            obstacles[i].width = d1;
-            obstacles[i].length = d2;
-        } else {
-            obstacles[i].width = d2;
-            obstacles[i].length = d1;
-        }
-    }
+       const int randomization = rand() % 6;
 
-    for (int i = 0; i < 2; i++) {
-        // Randomize locations
-        obstacles[i].location.x =
-                (rand() % 100) *
-                (quadrantBounds[i][1] - quadrantBounds[i][0] - obstacles[i].width) / 100.0 +
-                quadrantBounds[i][0];
-        obstacles[i].location.y =
-                (rand() % 100) *
-                (quadrantBounds[i][3] - quadrantBounds[i][2] - obstacles[i].length) / 100.0 +
-                quadrantBounds[i][2] + obstacles[i].length;
-    }
 
-    // Randomize target quadrant (and place obstacle opposite)
-    if (rand() % 2) {
-        destination.x =
-                (rand() % 100) *
-                (quadrantBounds[2][1] - quadrantBounds[2][0] - TARGET_DIAMETER) / 100.0 +
-                quadrantBounds[2][0] + TARGET_DIAMETER;
-        destination.y =
-                (rand() % 100) *
-                (quadrantBounds[2][3] - quadrantBounds[2][2] - TARGET_DIAMETER) / 100.0 +
-                quadrantBounds[2][2] + TARGET_DIAMETER;
-        obstacles[2].location.x =
-                (rand() % 100) *
-                (quadrantBounds[3][1] - quadrantBounds[3][0] - obstacles[2].width) / 100.0 +
-                quadrantBounds[3][0];
-        obstacles[2].location.y = MAX(
-                (rand() % 100) *
-                (quadrantBounds[3][3] - quadrantBounds[3][2] - obstacles[2].length) / 100.0 +
-                quadrantBounds[3][2] + obstacles[2].length,
-                destination.y + TARGET_DIAMETER / 2 + 0.5
-                );
-    } else {
-        destination.x =
-                (rand() % 100) *
-                (quadrantBounds[3][1] - quadrantBounds[3][0] - TARGET_DIAMETER) / 100.0 +
-                quadrantBounds[3][0] + TARGET_DIAMETER;
-        destination.y =
-                (rand() % 100) *
-                (quadrantBounds[3][3] - quadrantBounds[3][2] - TARGET_DIAMETER) / 100.0 +
-                quadrantBounds[3][2] + TARGET_DIAMETER;
-        obstacles[2].location.x =
-                (rand() % 100) *
-                (quadrantBounds[2][1] - quadrantBounds[2][0] - obstacles[2].width) / 100.0 +
-                quadrantBounds[2][0];
-        obstacles[2].location.y = MIN(
-                (rand() % 100) *
-                (quadrantBounds[2][3] - quadrantBounds[2][2] - obstacles[2].length) / 100.0 +
-                quadrantBounds[2][2] + obstacles[2].length,
-                destination.y - TARGET_DIAMETER / 2 - 0.5
-                );
-    }
+       // Akhil's Algorithm
+
+       for(int i = 0; i < 3; i++) {
+           // y location is either 1.8, 1.25, or 0.7: distances of 0.65
+           float baseY = presets[randomization][i] * 0.65 + OBSTACLE_HEIGHT + 0.1;
+           obstacles[i].location.y = baseY;
+
+           obstacles[i].location.x = i * 0.55 + 1.5;
+           obstacles[i].length = OBSTACLE_HEIGHT;
+           obstacles[i].width = OBSTACLE_WIDTH;
+       }
+
+       // the target randomization will be in a box
+       float xMin = 2.8 + 0.4 + TARGET_DIAMETER / 2;
+       float xMax = 4 - OSV_WIDTH - 0.1 - TARGET_DIAMETER / 2;
+       float yMin = 0.4 + TARGET_DIAMETER / 2;
+       float yMax = 2 - 0.4 - TARGET_DIAMETER / 2;
+
+       // we now have ranges
+       destination.x = (rand() % 100) / 100.0 * (xMax - xMin) + xMin;
+       destination.y = (rand() % 100) / 100.0 * (yMax - yMin) + yMin;
 
     osv->startingLocation = startingLocation;
     osv->destination = destination;

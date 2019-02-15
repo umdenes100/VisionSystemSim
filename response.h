@@ -10,7 +10,7 @@
 #include "detail.h"
 
 #define RESP_TIME_MILLIS 140                        //average response time of the VS
-#define RESP_DELAY_MILLIS (RESP_TIME_MILLIS - 75)   //avg delay used (offset by 50sms because of other delays)
+#define RESP_DELAY_MILLIS (RESP_TIME_MILLIS - 40)   //avg delay used (offset by 30ms because of other delays)
 
 static QRandomGenerator gen = QRandomGenerator::securelySeeded();
 static std::normal_distribution<double> entropy_dist (RESP_DELAY_MILLIS, RESP_TIME_MILLIS * ENTROPY_STDDEV);
